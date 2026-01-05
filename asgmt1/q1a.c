@@ -13,14 +13,12 @@ int main() {
 
     #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-    printf("random number:%f",frand());
+//    printf("random number:%f",frand());
 
-/*
+
     for (int i=0;i<10;i++) {
-        int r = rand()%10;
-        double ra = r/10;
-        printf("random number:%f\n",ra);
+        printf("random number%d: %f\n",i,frand());
     }
-*/
+
     return 0;
 }
