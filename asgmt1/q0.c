@@ -13,5 +13,6 @@ int main() {
     printf("float:%f\n",fl);
     printf("double:%f\n",dub);
 
+    printf("%d",sizeof(itgr));
     return 0;
 }

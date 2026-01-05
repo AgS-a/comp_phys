@@ -8,17 +8,19 @@ int main() {
 
 // lower bound + (random number mod RANGE)
 
-    int r = rand()%10;
-    double ra = r/10;
+//    int r = rand()%10;
+  //  double ra = r/10;
 
-    printf("random number:%f",ra);
+    #define frand() ((double) rand() / (RAND_MAX+1.0))
 
+    printf("random number:%f",frand());
 
+/*
     for (int i=0;i<10;i++) {
         int r = rand()%10;
         double ra = r/10;
         printf("random number:%f\n",ra);
     }
-
+*/
     return 0;
 }
