@@ -16,9 +16,9 @@ int main() {
         fprintf(fPtr,"%f\n",frand());
     }
     
-    fprintf(fPtr,"Changing seed and generating 10 new random numbers\n");
+    fprintf(fPtr,"\nChanging seed and generating 10 new random numbers\n\n");
 
-    srand(time(NULL)); // Seeding the random number generator with current time 
+    srand(time(NULL)+1); // Seeding the random number generator with current time 
 
     for (int i=0;i<10;i++) {
         fprintf(fPtr,"%f\n",frand());
