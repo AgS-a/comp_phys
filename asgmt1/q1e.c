@@ -21,8 +21,6 @@ int main() {
         fscanf(fPtr,"%lf",&numbers[i]);
         i++;
     }
-    
-    fclose(fPtr);
    
    double sum;
     for(int j=0;j<10;j++) {
@@ -30,7 +28,15 @@ int main() {
     }
     double avg;
     avg = sum/10;
+    
+    fclose(fPtr);
+    FILE*fpt;
+    fpt = fopen("test_ran.dat","a");
+    
+    fprintf(fpt,"\nNOW calculating average of 10 random numbers\n\n");
+    fprintf(fpt,"%f\n",avg);
+    
+    fclose(fpt);
 
-    printf("average is: %f",avg);
     return 0;
 }

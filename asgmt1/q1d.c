@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<time.h>
 
 int main() {
     
@@ -15,6 +14,7 @@ int main() {
         for (int j=0;j<10;j++) {
             fprintf(fPtr,"%0.10f    ",frand());
         }
+
         fprintf(fPtr,"\n");
     }
     
