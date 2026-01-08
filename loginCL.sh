@@ -6,7 +6,7 @@
 SUBNET="192.168.10"
 
 nofloop=0
-while [ $nofloop -le 1000 ]  
+while [ $nofloop -le 360 ]  
 do
     i=$((16 + RANDOM% 112))
 
@@ -23,4 +23,4 @@ done
 
 USERNAME="abhaygnanaskandan.s"
 
-konsole -e "ssh -o StrictHostKeyChecking=no -L 51234:localhost:51234 ${USERNAME}@${IP_ADDRESS}" &
+ssh -o StrictHostKeyChecking=no ${USERNAME}@${IP_ADDRESS}
