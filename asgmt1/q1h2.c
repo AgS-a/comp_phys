@@ -3,10 +3,10 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-double avg_ran() {
+double ran() {
     double n;
     for (int i=0;i<10000;i++) {
-        n = n + frand();
+        n = n + ((2 * frand()) - 1);
     }
     return n;
 }
@@ -14,17 +14,22 @@ double avg_ran() {
 int main() {
     
     srand(31415);
-
+    
     FILE*fPtr;
 
-    fPtr = fopen("dist_sum_10k.dat","w");
-
+    fPtr = fopen("omot.dat","w");
     for(int i=0;i<10000;i++) {
-        fprintf(fPtr,"%f\n",avg_ran());
+        fprintf(fPtr,"%f\n",ran());
     }
-
     fclose(fPtr);
-    
+
+    FILE*fp;
+
+    fp = fopen("omoh.dat","w");
+    for(int i=0;i<100000;i++) {
+        fprintf(fp,"%f\n",ran());
+    }
+    fclose(fp);
+
     return 0;
 }
-
