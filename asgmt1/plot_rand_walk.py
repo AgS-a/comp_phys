@@ -16,7 +16,7 @@ ran_wal_i = []
 
 with open('sum_ran_walk.dat','r') as ra:
     for line in ra:
-        ran_wal_i.append(float(line.strip()))
+        ran_wal_i.append(int(line.strip()))
 
 ## Q1i ##
 
