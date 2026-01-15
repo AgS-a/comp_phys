@@ -1,22 +1,31 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-double bad_rnd(double iran) {
+int iran;
+
+double bad_rnd() {
     int m = 131072;
     int a = 1277;
     int ir;
     double bad_rn;
 
-    ir = a * iran;
-    ir = ir % m;
+    iran = a * iran;
+    iran = iran % m;
 
-    iran = ir/(double)m;
+    bad_rn = iran/(double)m;
 
-    return iran;
+    return bad_rn;
 }
 
 int main() {
     
-    printf("%f",bad_rnd(10.0));
+    FILE*fptr;
+    fptr = fopen("bad_random_numbers.dat","w");
+    iran = 13337;
+    
+    for (int i=0;i < 1000;i++) {
+        fprintf(fptr,"%f\n",bad_rnd());
+    }
+    fclose(fptr);
     return 0;
 }
