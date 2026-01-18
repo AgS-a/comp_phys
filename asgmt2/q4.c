@@ -5,24 +5,30 @@
 #include<stdlib.h>
 #include<math.h>
 
-double trap_int_pi(long long int n) {
+double trap_int_pi(int n) {
     
-    double x[n+1];
-    double y[n+1];
+    double x1 = 0;
+    double x2;
+    double y1;
+    double y2;
 
-    for(int i=0;i<=n;i++) {
-        x[i] = i * (1/(double)n);
-        y[i] = 4 / (1+(pow(x[i],2)));
-    }
-    
-    double dx = x[n] - x[n-1];
+    y1 = 4 / (1+(pow(x1,2)));
+
+    double dx = 1/(double)n ;
     double buf = 0;
     double sum = 0;
 
-    for(int i=0;i<n;i++) {
-        buf = (dx * y[i]) + (0.5 * dx * (y[i+1] - y[i]));
+    for(int i=0;i<=n;i++) {
+        x2 = (i+1) * (1/(double)n);
+        y2 = 4 / (1+(pow(x2,2)));
+
+        buf = (dx * y1) + (0.5 * dx * (y2 - y1));
         sum = sum + buf;
+
+        x1 = x2;
+        y1 = y2;
     }
+    
     return sum;
 }
 
