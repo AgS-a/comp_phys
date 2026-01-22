@@ -43,3 +43,21 @@ difference between avg and 0.5(10000):
 
 difference between avg and 0.5(1000000):
 0.000060
+
+Average of 100 numbers:
+0.454289
+
+Average of 10000 numbers:
+0.499553
+
+Average of 1000000 numbers:
+0.499940
+
+difference between avg and 0.5(100):
+0.045711
+
+difference between avg and 0.5(10000):
+0.000447
+
+difference between avg and 0.5(1000000):
+0.000060
