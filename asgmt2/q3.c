@@ -15,25 +15,43 @@ int main() {
         expx[i] = exp( ( (-2) * frand() ) );
     }
 
-    double gauss[n];
-
-    double mean = 0;
-    double std_dev = 2;
-
-    for(int i=0;i<n;i++) {
-        double rn = frand();
-        rn = pow((rn-mean),2);
-        rn = rn/((-2) * std_dev);
-        rn = pow(exp(1),rn);
-
-        printf("%f\n",rn);
-    }
-
     for(int i=0;i<n;i++) {
         fprintf(fptr,"%f\n",expx[i]);
     }
-    
     fclose(fptr);
+
+    double gauss[n];
+    double x[n];
+
+    double mean = 0;
+    double std_dev = 2;
+    double var = std_dev*std_dev;
+
+    for(int i=0;i<n;i++) {
+        double rn = frand();
+        x[i] = rn;
+        rn = pow((rn-mean),2);
+        rn = rn/((2) * var);
+        rn = pow(exp(1),-rn);
+        gauss[i] = rn;
+    }
+
+
+    FILE*fpt;
+    fpt = fopen("gau.dat","w");
+    
+    for(int i=0;i<n;i++) {
+        fprintf(fpt,"%f\n",gauss[i]);
+    }
+    fclose(fpt);
+
+    FILE*fp;;
+    fp = fopen("x.dat","w");
+
+    for(int i=0;i<n;i++) {
+        fprintf(fp,"%f\n",x[i]);
+    }
+    fclose(fp);
 
     return 0;
 }
