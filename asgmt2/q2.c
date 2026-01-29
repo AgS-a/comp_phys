@@ -9,7 +9,7 @@ int main() {
 
     fptr = fopen("random.dat","w");
 
-    for (int i=0;i<1000;i++){
+    for (int i=0;i<10000;i++){
         fprintf(fptr,"%f\n",frand());
     }
     

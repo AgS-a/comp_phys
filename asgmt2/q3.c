@@ -12,7 +12,7 @@ int main() {
 
     double expx[n];
     for(int i=0;i<n;i++) {
-        expx[i] = exp( ( (-2) * frand() ) );
+        expx[i] = -log(frand())/2;
     }
 
     for(int i=0;i<n;i++) {
@@ -28,14 +28,11 @@ int main() {
     double var = std_dev*std_dev;
 
     for(int i=0;i<n;i++) {
-        double rn = frand();
-        x[i] = rn;
-        rn = pow((rn-mean),2);
-        rn = rn/((2) * var);
-        rn = pow(exp(1),-rn);
+        //double rn = frand();
+        //x[i] = rn;
+        double rn = sqrt(-2*log(frand())) * cos(2*3.1415*frand()) * std_dev;
         gauss[i] = rn;
     }
-
 
     FILE*fpt;
     fpt = fopen("gau.dat","w");
@@ -44,7 +41,7 @@ int main() {
         fprintf(fpt,"%f\n",gauss[i]);
     }
     fclose(fpt);
-
+/*
     FILE*fp;;
     fp = fopen("x.dat","w");
 
@@ -52,6 +49,6 @@ int main() {
         fprintf(fp,"%f\n",x[i]);
     }
     fclose(fp);
-
+*/
     return 0;
 }
