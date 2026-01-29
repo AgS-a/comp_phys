@@ -1,0 +1,3 @@
+refer: lectures 17,18,20,21AB,23 of statmech
+
+change: do 2D triangular lattice instead of 3D cubic

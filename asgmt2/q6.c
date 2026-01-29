@@ -80,11 +80,54 @@ double imp_integral() {
     }
     return (sum/n) * volume;
 }
+
+//standard deviation function taken from: https://www.geeksforgeeks.org/c/standard-deviation-in-c/
+double calculateStandardDeviation(int N, double data[])
+{
+    // variable to store sum of the given data
+    double sum = 0;
+    for (int i = 0; i < N; i++) {
+        sum += data[i];
+    }
+
+    // calculating mean
+    double mean = sum / N;
+
+    // temporary variable to store the summation of square
+    // of difference between individual data items and mean
+    double values = 0;
+
+    for (int i = 0; i < N; i++) {
+        values += pow(data[i] - mean, 2);
+    }
+
+    // variance is the square of standard deviation
+    double variance = values / N;
+
+    // calculating standard deviation by finding square root
+    // of variance
+    double standardDeviation = sqrt(variance);
+
+    // printing standard deviation
+    printf("%.10f\n", standardDeviation);
+}
+
 int main() {
     
-    printf("%f\n",brute_integral());
-    printf("%f",imp_integral());
+    printf("brute: %f\n",brute_integral());
+    printf("imp: %f\n",imp_integral());
 
+    int tries = 100;
+    double imp[tries];
+    double bru[tries];
+    for(int i=0;i<tries;i++) {
+       imp[i] = imp_integral();
+       bru[i] = brute_integral();
+    }
+    printf("std_dev of imp_int: ");
+    calculateStandardDeviation(tries,imp);
+    printf("\nstd_dev of brute_int: ");
+    calculateStandardDeviation(tries,bru);
     return 0;
 }
 
