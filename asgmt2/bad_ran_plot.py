@@ -11,7 +11,9 @@ bad_rn_y = bad_rn[1:]
 bad_rn_y.append(bad_rn[0])
 plt.plot(bad_rn,bad_rn_y,'.')
 plt.title('Bad rnd no generator(lag=1)')
-#plt.hist(bad_rn,bins=25,edgecolor='black')
+plt.show()
+plt.hist(bad_rn,bins=25,edgecolor='black')
+plt.title('histgram of bad random numbers')
 plt.show()
 
 good_rn = []

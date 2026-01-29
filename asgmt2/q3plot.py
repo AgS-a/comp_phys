@@ -27,9 +27,11 @@ def bs(lis,x):
     return bin_edges
 
 plt.hist(expo,bins = bs(expo,0.1), edgecolor='black')
+plt.title('Sampling random numbers from an exponential distribution(inverse)')
 plt.show()
 
 plt.hist(gaussian,bins = bs(gaussian,0.2), edgecolor='black')
+plt.title('Sampling random numbers from a normal distribution(box-muller)')
 plt.show()
 
 #plt.plot(xd,gaussian,'.')
