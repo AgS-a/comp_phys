@@ -6,7 +6,7 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-double l = 6; //length of the needle
+double l = 9; //length of the needle
 int d = 10; //separation between lines
 int D = 1000000;
 double rand_nos[2];
@@ -15,7 +15,8 @@ double pos_det(double ned_pos[]) {
     rand_nos[0] = frand();
     rand_nos[1] = frand();
 
-    double theta = atan2(rand_nos[0],rand_nos[1]); // theta
+    double theta = atan2(rand_nos[0],rand_nos[1]); // theta //
+    //double theta = frand() * 3.1415; // theta //
     double center = frand() * D; //center
 
     ned_pos[0] = -((l * sin(theta))/2) + center;
@@ -77,6 +78,7 @@ int main() {
         double prob = sum/(double)no_tries[j];
         sum = 0;
         double err = fabs(pi_est(prob) - 4*atan(1));
+        printf("%f\n",pi_est(prob));
         fprintf(fptr,"%f\n",err);
     }
     fclose(fptr);
