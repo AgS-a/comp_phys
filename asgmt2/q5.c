@@ -15,8 +15,9 @@ double pos_det(double ned_pos[]) {
     rand_nos[0] = frand();
     rand_nos[1] = frand();
 
-    double theta = atan2(rand_nos[0],rand_nos[1]); // theta //
-    //double theta = frand() * 3.1415; // theta //
+    //double theta = atan2(rand_nos[0],rand_nos[1]); // theta //
+    double theta = frand() * 3.1415; // theta //
+    //double theta = frand() * 1000; // theta //
     double center = frand() * D; //center
 
     ned_pos[0] = -((l * sin(theta))/2) + center;
@@ -50,7 +51,7 @@ int touch_check(double x1,double x2) {
 }
 int main() {
     
-    srand(314);
+    srand(51413);
 
     int n = 100000;
     double x[n+2]; 
