@@ -5,7 +5,7 @@
 #include<stdlib.h>
 #include<math.h>
 
-double trap_int_pi(int n) {
+double trap_int_pi(double n) {
     
     double x1 = 0;
     double x2;
@@ -37,7 +37,7 @@ int main() {
     FILE * fptr;
     fptr = fopen("pi_diff.dat","w");
 
-    int no_bins[11] = {10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,1e10,1e11};
+    double no_bins[11] = {10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,10000000000,100000000000};
     double diff;
     for(int i=0;i<11;i++) {
         diff = fabs(trap_int_pi(no_bins[i]) - (4*atan(1)));
