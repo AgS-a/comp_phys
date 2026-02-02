@@ -8,7 +8,7 @@ int main() {
     FILE*fptr;
     fptr = fopen("exp.dat","w");
     
-    int n = 10000;
+    int n = 100000;
 
     double expx[n];
     for(int i=0;i<n;i++) {

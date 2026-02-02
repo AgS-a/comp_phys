@@ -37,9 +37,9 @@ int main() {
     FILE * fptr;
     fptr = fopen("pi_diff.dat","w");
 
-    int no_bins[9] = {10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
+    int no_bins[11] = {10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,1e10,1e11};
     double diff;
-    for(int i=0;i<9;i++) {
+    for(int i=0;i<11;i++) {
         diff = fabs(trap_int_pi(no_bins[i]) - (4*atan(1)));
         fprintf(fptr,"%0.20f\n",i+1,diff);
         printf("10^%d: %0.20f\n",i+1,diff);

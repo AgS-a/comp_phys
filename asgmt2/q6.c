@@ -36,6 +36,9 @@ double brute_integral() {
 
     double fn=0;
     double sum=0;
+
+    double sum_norm=0;
+    double fn_norm=0;
     
     int n = 1000000;
     double volume = (upper_limit * upper_limit) * (2*2) * (2*3.1415*2*3.1415);
@@ -51,7 +54,10 @@ double brute_integral() {
         double phi2 = frand() * 2 * 3.1415;
         
         fn = wavefunction(r1,r2) * interaction(r1,r2,theta1,theta2,phi1,phi2) * inf(r1,r2); 
+        fn_norm = wavefunction(r1,r2) * inf(r1,r2);
         sum += fn;
+        sum_norm += fn_norm;
+
     }
     return (sum/n) * volume;
 
