@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 float sum_rand() {
     
@@ -58,7 +59,7 @@ int sum_rand_i() {
 
 int main() {
 
-    srand(31);
+    srand(time(NULL));
     FILE*fPtr;
     FILE*fp;
 

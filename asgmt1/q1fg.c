@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
 
 int main() {
 
@@ -9,7 +10,7 @@ int main() {
     fPtr = fopen("test_ran.dat","a");
 
     #define frand() ((double) rand() / (RAND_MAX+1.0))
-    srand(314);
+    srand(time(NULL));
 
     double hred;
     double tthous;

@@ -14,7 +14,7 @@ int triangular_lattice() {
 
 int main() {
     
-    
+    trial_matrix(); 
 
     return 0;
 }

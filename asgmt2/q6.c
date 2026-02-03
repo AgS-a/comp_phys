@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
@@ -90,36 +91,30 @@ double imp_integral() {
 //standard deviation function taken from: https://www.geeksforgeeks.org/c/standard-deviation-in-c/
 double calculateStandardDeviation(int N, double data[])
 {
-    // variable to store sum of the given data
     double sum = 0;
     for (int i = 0; i < N; i++) {
         sum += data[i];
     }
 
-    // calculating mean
     double mean = sum / N;
 
-    // temporary variable to store the summation of square
-    // of difference between individual data items and mean
     double values = 0;
 
     for (int i = 0; i < N; i++) {
         values += pow(data[i] - mean, 2);
     }
 
-    // variance is the square of standard deviation
     double variance = values / N;
 
-    // calculating standard deviation by finding square root
-    // of variance
     double standardDeviation = sqrt(variance);
 
-    // printing standard deviation
     printf("%.10f\n", standardDeviation);
 }
 
 int main() {
     
+    srand(time(NULL));
+
     printf("brute: %f\n",brute_integral());
     printf("imp: %f\n",imp_integral());
 

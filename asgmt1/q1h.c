@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
@@ -13,7 +14,7 @@ double avg_ran() {
 
 int main() {
     
-    srand(31415);
+    srand(time(NULL));
 
     FILE*fPtr;
 

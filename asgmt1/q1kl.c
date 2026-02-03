@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 float sum_rand() {
     
@@ -25,7 +26,7 @@ float sum_rand() {
 
 int main() {
 
-    srand(31);
+    srand(time(NULL));
     FILE*fPtr;
     fPtr = fopen("q1l.dat","w");
     

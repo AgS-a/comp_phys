@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
@@ -51,7 +52,7 @@ int touch_check(double x1,double x2) {
 }
 int main() {
     
-    srand(51413);
+    srand(time(NULL));
 
     int n = 100000;
     double x[n+2]; 

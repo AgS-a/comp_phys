@@ -14,12 +14,12 @@ double trap_int_pi(double n) {
 
     y1 = 4 / (1+(pow(x1,2)));
 
-    double dx = 1/(double)n ;
+    double dx = 1/n ;
     double buf = 0;
     double sum = 0;
 
     for(int i=0;i<=n;i++) {
-        x2 = (i+1) * (1/(double)n);
+        x2 = (i+1) * (1/n);
         y2 = 4 / (1+(pow(x2,2)));
 
         buf = (dx * y1) + (0.5 * dx * (y2 - y1));
@@ -37,11 +37,11 @@ int main() {
     FILE * fptr;
     fptr = fopen("pi_diff.dat","w");
 
-    double no_bins[11] = {10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,10000000000,100000000000};
+    double no_bins[9] = {10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
     double diff;
-    for(int i=0;i<11;i++) {
+    for(int i=0;i<9;i++) {
         diff = fabs(trap_int_pi(no_bins[i]) - (4*atan(1)));
-        fprintf(fptr,"%0.20f\n",i+1,diff);
+        fprintf(fptr,"%0.20f\n",diff);
         printf("10^%d: %0.20f\n",i+1,diff);
     }
     fclose(fptr);

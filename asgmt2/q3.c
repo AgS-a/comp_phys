@@ -1,22 +1,29 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
+
+#define frand() ((double) rand() / (RAND_MAX+1.0))
 
 int main() {
-    #define frand() ((double) rand() / (RAND_MAX+1.0))
     
+    srand(time(NULL));
+
     FILE*fptr;
     fptr = fopen("exp.dat","w");
     
     int n = 100000;
 
     double expx[n];
-    for(int i=0;i<n;i++) {
-        expx[i] = -log(frand())/2;
-    }
+    double exp_norm = 0;
 
     for(int i=0;i<n;i++) {
-        fprintf(fptr,"%f\n",expx[i]);
+        expx[i] = -log(frand())/2;
+        exp_norm += expx[i];
+    }
+        
+    for(int i=0;i<n;i++) {
+        fprintf(fptr,"%f\n",expx[i]/exp_norm);
     }
     fclose(fptr);
 
@@ -26,19 +33,21 @@ int main() {
     double mean = 0;
     double std_dev = 2;
     double var = std_dev*std_dev;
+    double gauss_norm =0;
 
     for(int i=0;i<n;i++) {
         //double rn = frand();
         //x[i] = rn;
         double rn = sqrt(-2*log(frand())) * cos(2*3.1415*frand()) * std_dev;
         gauss[i] = rn;
+        gauss_norm += gauss[i];
     }
 
     FILE*fpt;
     fpt = fopen("gau.dat","w");
     
     for(int i=0;i<n;i++) {
-        fprintf(fpt,"%f\n",gauss[i]);
+        fprintf(fpt,"%f\n",gauss[i]/gauss_norm);
     }
     fclose(fpt);
 /*

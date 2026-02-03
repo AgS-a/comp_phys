@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
+
+#define frand() ((double) rand() / (RAND_MAX+1.0))
 
 int main() {
-    srand(10);
-    #define frand() ((double) rand() / (RAND_MAX+1.0))
+    srand(time(NULL));
 
     FILE*fptr;
 
