@@ -26,11 +26,11 @@ def bs(lis,x):
     bin_edges = np.linspace(min_edge, max_edge, Nplus1)
     return bin_edges
 
-plt.hist(expo,bins = bs(expo,0.1), edgecolor='black')
+plt.hist(expo,bins = bs(expo,0.1), edgecolor='black', density=True)
 plt.title('Sampling random numbers from an exponential distribution(inverse)')
 plt.show()
 
-plt.hist(gaussian,bins = bs(gaussian,0.2), edgecolor='black')
+plt.hist(gaussian,bins = bs(gaussian,0.2), edgecolor='black', density=True)
 plt.title('Sampling random numbers from a normal distribution(box-muller)')
 plt.show()
 

@@ -23,7 +23,7 @@ int main() {
     }
         
     for(int i=0;i<n;i++) {
-        fprintf(fptr,"%f\n",expx[i]/exp_norm);
+        fprintf(fptr,"%f\n",expx[i]);
     }
     fclose(fptr);
 
@@ -47,7 +47,7 @@ int main() {
     fpt = fopen("gau.dat","w");
     
     for(int i=0;i<n;i++) {
-        fprintf(fpt,"%f\n",gauss[i]/gauss_norm);
+        fprintf(fpt,"%f\n",gauss[i]);
     }
     fclose(fpt);
 /*
