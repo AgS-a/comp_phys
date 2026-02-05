@@ -7,8 +7,8 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-double l = 9; //length of the needle
-int d = 10; //separation between lines
+double l = 7; //length of the needle
+int d = 11; //separation between lines
 int D = 1000000;
 double rand_nos[2];
 
@@ -17,7 +17,7 @@ double pos_det(double ned_pos[]) {
     rand_nos[1] = frand();
 
     //double theta = atan2(rand_nos[0],rand_nos[1]); // theta //
-    double theta = frand() * 3.1415; // theta //
+    double theta = frand() * (4*atan(1)); // theta //
     //double theta = frand() * 1000; // theta //
     double center = frand() * D; //center
 
@@ -54,15 +54,15 @@ int main() {
     
     srand(time(NULL));
 
-    int n = 100000;
-    double x[n+2]; 
-    x[0] = 0;
-    double d = (double)D/(double)n;
-
+    //int n = 100000;
+    //double x[n+2]; 
+    //x[0] = 0;
+    //double d = (double)D/(double)n;
+/*
     for(int i=0; i<n+1; i++) {
         x[i+1] = x[i] + d;
     }
-    
+*/  
     double ned_pos[2];
     int check;
     int sum = 0;
@@ -75,14 +75,18 @@ int main() {
         for(int i=0;i<no_tries[j];i++) { 
             pos_det(ned_pos);
             check = touch_check(ned_pos[0],ned_pos[1]);
-            sum = sum + check;
+            sum += check;
         }
         double prob = sum/(double)no_tries[j];
         sum = 0;
         double err = fabs(pi_est(prob) - 4*atan(1));
+        printf("value of pi(on throwing %9d times): ",no_tries[j]);
         printf("%f\n",pi_est(prob));
+        printf("error in value of pi: ");
+        printf("%f\n", err);
         fprintf(fptr,"%f\n",err);
     }
+
     fclose(fptr);
     return 0;
 }

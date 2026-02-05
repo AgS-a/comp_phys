@@ -31,7 +31,24 @@ double inf(double r1,double r2) {
     return iftsml;
 }
 
-double brute_integral() {
+double norm(int n) {
+    double upper_limit = 5;
+    double nor=0;
+    double sum = 0;
+
+    double volume = (pow(upper_limit,2)) * (2*2) * (2*3.1415 * 2*3.1415);
+
+    for(int i=0;i<n;i++) {
+        double r1 = frand() * upper_limit;
+        double r2 = frand() * upper_limit;
+
+        nor = wavefunction(r1,r2) * inf(r1,r2);
+        sum += nor;
+    }
+    return (sum/n) * volume;
+}
+
+double brute_integral(int n, double *err) {
     double lower_limit = 0;
     double upper_limit = 5;
 
@@ -40,8 +57,8 @@ double brute_integral() {
 
     double sum_norm=0;
     double fn_norm=0;
+    double sum_sq=0;
     
-    int n = 1000000;
     double volume = (upper_limit * upper_limit) * (2*2) * (2*3.1415*2*3.1415);
 
     for(int i=0;i<n;i++) {
@@ -55,19 +72,22 @@ double brute_integral() {
         double phi2 = frand() * 2 * 3.1415;
         
         fn = wavefunction(r1,r2) * interaction(r1,r2,theta1,theta2,phi1,phi2) * inf(r1,r2); 
-        fn_norm = wavefunction(r1,r2) * inf(r1,r2);
         sum += fn;
-        sum_norm += fn_norm;
+        sum_sq += fn*fn;
 
     }
+    double mean = sum/n;
+    double mean_sq = sum_sq/n;
+    double var = mean_sq - (mean*mean);
+    *err = volume * sqrt(var/n);
     return (sum/n) * volume;
 
 }
 
-double imp_integral() {
-    int n = 1000000;
+double imp_integral(int n, double *err) {
     double fn=0;
     double sum=0;
+    double sum_sq=0;
     double alpha = 2;
 
     double volume = (16 * 3.1415 * 3.1415) / (4* alpha* alpha);
@@ -84,10 +104,15 @@ double imp_integral() {
 
         fn = inf(r1,r2) * interaction(r1,r2,theta1,theta2,phi1,phi2);
         sum+= fn;
+        sum_sq+= fn*fn;
     }
+    double mean = sum/n;
+    double mean_sq = sum_sq/n;
+    double var = mean_sq - (mean*mean);
+    *err = volume * sqrt(var/n);
     return (sum/n) * volume;
 }
-
+/*
 //standard deviation function taken from: https://www.geeksforgeeks.org/c/standard-deviation-in-c/
 double calculateStandardDeviation(int N, double data[])
 {
@@ -110,25 +135,36 @@ double calculateStandardDeviation(int N, double data[])
 
     printf("%.10f\n", standardDeviation);
 }
-
+*/
 int main() {
     
     srand(time(NULL));
+    
+    double norm_const = norm(1000000);
+    //printf("brute: %f\n",brute_integral());
+    //printf("imp: %f\n",imp_integral());
 
-    printf("brute: %f\n",brute_integral());
-    printf("imp: %f\n",imp_integral());
+    int tries[8] = {10,100,1000,10000,100000,1000000,10000000,100000000};
+    
+    printf("Tries            Imp          Error_imp       Brute         Error_brute\n");
+    for(int j=0;j<8;j++) {
+        double imp_err;
+        double brute_err;
 
-    int tries = 100;
-    double imp[tries];
-    double bru[tries];
-    for(int i=0;i<tries;i++) {
-       imp[i] = imp_integral();
-       bru[i] = brute_integral();
+        double imp_val = imp_integral(tries[j], &imp_err);
+        double brute_val = brute_integral(tries[j], &brute_err);
+
+     //   for(int i=0;i<tries[j];i++) {
+       //     imp[tries[i]] = imp_integral(tries[j]);
+     //       bru[tries[i]] = brute_integral(tries[j]);
+       // }
+        printf("%9d         %0.4f       %0.4f        %0.4f          %0.4f\n",tries[j],imp_val/norm_const,imp_err/norm_const,brute_val/norm_const,brute_err/norm_const);
     }
-    printf("std_dev of imp_int: ");
-    calculateStandardDeviation(tries,imp);
-    printf("\nstd_dev of brute_int: ");
-    calculateStandardDeviation(tries,bru);
+
+    //printf("std_dev of imp_int: ");
+    //calculateStandardDeviation(tries,imp);
+    //printf("\nstd_dev of brute_int: ");
+    //calculateStandardDeviation(tries,bru);
     return 0;
 }
 

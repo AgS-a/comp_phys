@@ -23,7 +23,7 @@ int main() {
     fptr = fopen("bad_random_numbers.dat","w");
     iran = 13337;
     
-    for (int i=0;i < 1000;i++) {
+    for (int i=0;i < 10000;i++) {
         fprintf(fptr,"%f\n",bad_rnd());
     }
     fclose(fptr);
