@@ -37,5 +37,21 @@ print('Mean: ',np.mean(good_rn))
 print('std_dev: ',np.std(good_rn))
 good_r = [(i - np.mean(good_rn)) for i in good_rn]
 result = np.correlate(good_r,good_r,mode='full')
-cor = result[result.size // 2:] / (np.var(good_r) * len(good_r))
-print('corr: ',cor)
+#cor = result[result.size // 2:] / (np.var(good_r) * len(good_r))
+sum_cor = sum(result)/len(result)
+print('corr: ',sum_cor)
+
+k_lag = []
+# c = (<x_nx_n+k> - <mean>**2)/var
+for i in range(len(good_rn)):
+    y=0
+    for j in range(len(good_rn)):
+        x = good_rn[i]*good_rn[i-j]
+        y = y+x
+    avg = y/len(good_rn)
+    c = (avg - (np.mean(good_rn)**2))/np.var(good_rn)
+    k_lag.append(c)
+
+plt.plot(good_rn,k_lag,'.')
+plt.show()
+
