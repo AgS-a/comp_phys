@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
 
 gaussian = []
 expo = []
@@ -11,12 +12,7 @@ with open("gau.dat","r") as gau:
 with open("exp.dat","r") as exp:
     for line in exp:
         expo.append(float(line.strip()))
-'''
-xd = []
-with open("x.dat","r") as x:
-    for line in x:
-        xd.append(float(line.strip()))
-'''
+
 def bs(lis,x):
     bin_size = x
     min_edge = min(lis)
@@ -26,20 +22,36 @@ def bs(lis,x):
     bin_edges = np.linspace(min_edge, max_edge, Nplus1)
     return bin_edges
 
-x = np.linspace(0,4,1000)
-y = [2*np.exp(-2*i) for i in x]
-plt.plot(x,y)
-plt.hist(expo,bins = bs(expo,0.1), edgecolor='black', density=True)
+def expo_dist(x, alpha):
+    return alpha * np.exp(-alpha * x)
+
+def gaussian_pdf(x, mu, sigma):
+    return (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mu) / sigma)**2)
+
+plt.figure(figsize=(8, 6))
+
+counts, bins, _ = plt.hist(expo, bins=bs(expo, 0.1), edgecolor='black', density=True)
+bin_centers = (bins[:-1] + bins[1:]) / 2
+
+popt_e, _ = curve_fit(expo_dist, bin_centers, counts)
+
+x_fit = np.linspace(min(expo), max(expo), 1000)
+plt.plot(x_fit, expo_dist(x_fit, *popt_e), 'r-', linewidth=2, label=f'Fit: alpha={popt_e[0]:.2f}')
+
 plt.title('Sampling random numbers from an exponential distribution(inverse)')
+plt.legend()
 plt.show()
 
-x2 = np.linspace(-7.5,7.5,1000)
-y2 = [(1/np.sqrt(2*np.pi*4))*np.exp(-((i**2)/2*4)) for i in x2]
-plt.plot(x2,y2)
-plt.hist(gaussian,bins = bs(gaussian,0.2), edgecolor='black', density=True)
+plt.figure(figsize=(8, 6))
+
+counts, bins, _ = plt.hist(gaussian, bins=bs(gaussian, 0.2), edgecolor='black', density=True)
+bin_centers = (bins[:-1] + bins[1:]) / 2
+
+popt_g, _ = curve_fit(gaussian_pdf, bin_centers, counts, p0=[0, 1])
+
+x_fit = np.linspace(min(gaussian), max(gaussian), 1000)
+plt.plot(x_fit, gaussian_pdf(x_fit, *popt_g), 'r-', linewidth=2, label=f'Fit: mu={popt_g[0]:.2f}, sigma={popt_g[1]:.2f}')
+
 plt.title('Sampling random numbers from a normal distribution(box-muller)')
+plt.legend()
 plt.show()
-
-#plt.plot(xd,gaussian,'.')
-#plt.show()
-

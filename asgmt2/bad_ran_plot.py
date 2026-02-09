@@ -42,16 +42,38 @@ sum_cor = sum(result)/len(result)
 print('corr: ',sum_cor)
 
 k_lag = []
+N = len(good_rn)
+mean_sq = np.mean(good_rn)**2
+variance = np.var(good_rn)
+
 # c = (<x_nx_n+k> - <mean>**2)/var
-for i in range(len(good_rn)):
+for k in range(N):
     y=0
-    for j in range(len(good_rn)):
-        x = good_rn[i]*good_rn[i-j]
+    for i in range(N-k):
+        x = good_rn[i]*good_rn[i+k]
         y = y+x
-    avg = y/len(good_rn)
-    c = (avg - (np.mean(good_rn)**2))/np.var(good_rn)
+    avg = y/(N-k)
+    c = (avg - mean_sq)/variance
     k_lag.append(c)
 
-plt.plot(good_rn,k_lag,'.')
+plt.plot(range(N),k_lag,'.')
+plt.show()
+
+k_lag = []
+N = len(bad_rn)
+mean_sq = np.mean(bad_rn)**2
+variance = np.var(bad_rn)
+
+# c = (<x_nx_n+k> - <mean>**2)/var
+for k in range(N):
+    y=0
+    for i in range(N-k):
+        x = bad_rn[i]*bad_rn[i+k]
+        y = y+x
+    avg = y/(N-k)
+    c = (avg - mean_sq)/variance
+    k_lag.append(c)
+
+plt.plot(range(N),k_lag,'.')
 plt.show()
 

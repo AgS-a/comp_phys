@@ -2,81 +2,84 @@
 #include<stdlib.h>
 #include<time.h>
 
-float sum_rand() {
-    
-    float ran[10000];
-    float x;
-    float n;
-    float sum = 0;
-    
-    for(int i=0;i<10000;i++) {
-        
-        /*while(x=0.5) {
-            x = frand();
-        } */
+float sum_rand()
+{
 
-        x =  (rand()%2) + 1;
-        
-        if(x == 1) {
-            n = 1;
-        } else {
-            n = -1;
+        float ran[10000];
+        float x;
+        float n;
+        float sum = 0;
+
+        for (int i = 0; i < 10000; i++) {
+
+                /*while(x=0.5) {
+                   x = frand();
+                   } */
+
+                x = (rand() % 2) + 1;
+
+                if (x == 1) {
+                        n = 1;
+                } else {
+                        n = -1;
+                }
+                sum = sum + n;
         }
-        sum = sum + n;
-    }
 /*
     for(int i=0;i<10000;i++) {
         n = n + ran[i];
     }*/
-    return sum;
+        return sum;
 }
 
-int sum_rand_i() {
-    
-    int ran[10000];
-    int x;
-    int n;
-    int sum = 0;
-    
-    for(int i=0;i<10000;i++) {
-        
-        /*while(x=0.5) {
-            x = frand();
-        } */
+int sum_rand_i()
+{
 
-        x =  (rand()%2) + 1;
-        
-        if(x == 1) {
-            n = 1;
-        } else {
-            n = -1;
+        int ran[10000];
+        int x;
+        int n;
+        int sum = 0;
+
+        for (int i = 0; i < 10000; i++) {
+
+                /*while(x=0.5) {
+                   x = frand();
+                   } */
+
+                x = (rand() % 2) + 1;
+
+                if (x == 1) {
+                        n = 1;
+                } else {
+                        n = -1;
+                }
+                sum = sum + n;
         }
-        sum = sum + n;
-    }
 
-    return sum;
+        return sum;
 }
 
-int main() {
+int main()
+{
 
-    srand(time(NULL));
-    FILE*fPtr;
-    FILE*fp;
+        srand(time(NULL));
+        FILE *fPtr;
+        FILE *fp;
 
-    fPtr = fopen("sum_ran_walk.dat","w");
-    
-    for(int i=0;i<10000;i++) {
-        fprintf(fPtr,"%d\n",sum_rand_i());
-    }
-    fclose(fPtr);
+        fPtr = fopen("sum_ran_walk.dat", "w");
 
-    fp = fopen("q1k.dat","w");
+        for (int i = 0; i < 10000; i++) {
+                fprintf(fPtr, "%d\n", sum_rand_i());
+        }
+        fclose(fPtr);
 
-    for(int i=0;i<100000;i++) {
-        fprintf(fp,"%f\n",sum_rand());
-    }
+        fp = fopen("q1k.dat", "w");
 
-    fclose(fp);
+        for (int i = 0; i < 100000; i++) {
+                fprintf(fp, "%f\n", sum_rand());
+        }
 
-    return 0;
+        fclose(fp);
+
+        return 0;
 }

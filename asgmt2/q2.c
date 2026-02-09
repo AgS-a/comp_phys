@@ -4,18 +4,19 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-int main() {
-    srand(time(NULL));
+int main()
+{
+        srand(time(NULL));
 
-    FILE*fptr;
+        FILE *fptr;
 
-    fptr = fopen("random.dat","w");
+        fptr = fopen("random.dat", "w");
 
-    for (int i=0;i<10000;i++){
-        fprintf(fptr,"%f\n",frand());
-    }
-    
-    fclose(fptr);
+        for (int i = 0; i < 10000; i++) {
+                fprintf(fptr, "%f\n", frand());
+        }
 
-    return 0;
+        fclose(fptr);
+
+        return 0;
 }

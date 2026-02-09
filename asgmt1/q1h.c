@@ -4,28 +4,29 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-double avg_ran() {
-    double n;
-    for (int i=0;i<10000;i++) {
-        n = n + frand();
-    }
-    return n;
+double avg_ran()
+{
+        double n;
+        for (int i = 0; i < 10000; i++) {
+                n = n + frand();
+        }
+        return n;
 }
 
-int main() {
-    
-    srand(time(NULL));
+int main()
+{
 
-    FILE*fPtr;
+        srand(time(NULL));
 
-    fPtr = fopen("dist_sum_10k.dat","w");
+        FILE *fPtr;
 
-    for(int i=0;i<10000;i++) {
-        fprintf(fPtr,"%f\n",avg_ran());
-    }
+        fPtr = fopen("dist_sum_10k.dat", "w");
 
-    fclose(fPtr);
-    
-    return 0;
+        for (int i = 0; i < 10000; i++) {
+                fprintf(fPtr, "%f\n", avg_ran());
+        }
+
+        fclose(fPtr);
+
+        return 0;
 }
-
