@@ -44,9 +44,10 @@ int main()
     1000000000 };
         double diff;
         for (int i = 0; i < 9; i++) {
-                diff = fabs(trap_int_pi(no_bins[i]) - (4 * atan(1)));
+                double pi_calc = trap_int_pi(no_bins[i]);
+                diff = fabs(pi_calc - (4 * atan(1)));
                 fprintf(fptr, "%0.20f\n", diff);
-                printf("10^%d: %0.20f\n", i + 1, diff);
+                printf("10^%d: %0.20f\n", i + 1, pi_calc);
         }
         fclose(fptr);
 

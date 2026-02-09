@@ -36,8 +36,8 @@ bin_centers = (bins[:-1] + bins[1:]) / 2
 popt_e, _ = curve_fit(expo_dist, bin_centers, counts)
 
 x_fit = np.linspace(min(expo), max(expo), 1000)
-plt.plot(x_fit, expo_dist(x_fit, *popt_e), 'r-', linewidth=2, label=f'Fit: alpha={popt_e[0]:.2f}')
-
+plt.plot(x_fit, expo_dist(x_fit, *popt_e), 'r-', linewidth=2, label=f'Fit: $\\alpha$={popt_e[0]:.2f}')
+plt.ylabel('PDF')
 plt.title('Sampling random numbers from an exponential distribution(inverse)')
 plt.legend()
 plt.show()
@@ -50,8 +50,9 @@ bin_centers = (bins[:-1] + bins[1:]) / 2
 popt_g, _ = curve_fit(gaussian_pdf, bin_centers, counts, p0=[0, 1])
 
 x_fit = np.linspace(min(gaussian), max(gaussian), 1000)
-plt.plot(x_fit, gaussian_pdf(x_fit, *popt_g), 'r-', linewidth=2, label=f'Fit: mu={popt_g[0]:.2f}, sigma={popt_g[1]:.2f}')
+plt.plot(x_fit, gaussian_pdf(x_fit, *popt_g), 'r-', linewidth=2, label=f'Fit: $\mu$={popt_g[0]:.2f}, $\sigma$={popt_g[1]:.2f}')
 
 plt.title('Sampling random numbers from a normal distribution(box-muller)')
 plt.legend()
+plt.ylabel('PDF')
 plt.show()

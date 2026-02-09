@@ -130,44 +130,21 @@ double imp_integral(int n, double *err)
         return (sum / n) * volume;
 }
 
-/*
-//standard deviation function taken from: https://www.geeksforgeeks.org/c/standard-deviation-in-c/
-double calculateStandardDeviation(int N, double data[])
-{
-    double sum = 0;
-    for (int i = 0; i < N; i++) {
-        sum += data[i];
-    }
-
-    double mean = sum / N;
-
-    double values = 0;
-
-    for (int i = 0; i < N; i++) {
-        values += pow(data[i] - mean, 2);
-    }
-
-    double variance = values / N;
-
-    double standardDeviation = sqrt(variance);
-
-    printf("%.10f\n", standardDeviation);
-}
-*/
 int main()
 {
 
         srand(time(NULL));
 
         double norm_const = norm(1000000);
-        //printf("brute: %f\n",brute_integral());
-        //printf("imp: %f\n",imp_integral());
 
         int tries[8] =
             { 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000 };
+        FILE *fptr;
+        fptr = fopen("interaction.dat","w");
 
-        printf
-            ("Tries            Imp          Error_imp       Brute         Error_brute\n");
+        printf("Tries            Imp          Error_imp       Brute         Error_brute\n");
+        fprintf(fptr,"Tries            Imp          Error_imp       Brute         Error_brute\n");
+
         for (int j = 0; j < 8; j++) {
                 double imp_err;
                 double brute_err;
@@ -175,19 +152,17 @@ int main()
                 double imp_val = imp_integral(tries[j], &imp_err);
                 double brute_val = brute_integral(tries[j], &brute_err);
 
-                //   for(int i=0;i<tries[j];i++) {
-                //     imp[tries[i]] = imp_integral(tries[j]);
-                //       bru[tries[i]] = brute_integral(tries[j]);
-                // }
                 printf
-                    ("%9d         %0.4f       %0.4f        %0.4f          %0.4f\n",
-                     tries[j], imp_val / norm_const, imp_err / norm_const,
-                     brute_val / norm_const, brute_err / norm_const);
-        }
+                     ("%9d         %0.4f       %0.4f        %0.4f          %0.4f\n",
+                      tries[j], imp_val / norm_const, imp_err / norm_const,
+                      brute_val / norm_const, brute_err / norm_const);
+                fprintf
+                      (fptr,"%9d         %0.4f       %0.4f        %0.4f          %0.4f\n",
+                       tries[j], imp_val / norm_const, imp_err / norm_const,
+                       brute_val / norm_const, brute_err / norm_const);
 
-        //printf("std_dev of imp_int: ");
-        //calculateStandardDeviation(tries,imp);
-        //printf("\nstd_dev of brute_int: ");
-        //calculateStandardDeviation(tries,bru);
+        }
+        fclose(fptr);
+
         return 0;
 }

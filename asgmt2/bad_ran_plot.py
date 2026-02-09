@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-#import pandas as pd
 import numpy as np
 
 bad_rn = []
@@ -10,10 +9,14 @@ with open("bad_random_numbers.dat","r") as brn:
 bad_rn_y = bad_rn[1:]
 bad_rn_y.append(bad_rn[0])
 plt.plot(bad_rn,bad_rn_y,'.')
-plt.title('Bad rnd no generator(lag=1)')
+plt.title('Scatter plot of bad rnd nos(lag=1)')
+plt.xlabel('Bad random numbers')
+plt.ylabel('list with lag=1')
 plt.show()
+
 plt.hist(bad_rn,bins=25,edgecolor='black')
-plt.title('histgram of bad random numbers')
+plt.title('histogram of bad random numbers')
+plt.ylabel('counts')
 plt.show()
 
 good_rn = []
@@ -21,26 +24,29 @@ with open("random.dat","r") as grn:
     for lines in grn:
         good_rn.append(float(lines.strip()))
 
-#good_rn = pd.DataFrame(good_rn)
-#pd.plotting.lag_plot(good_rn,lag=1)
 good_rn_y = good_rn[1:]
 good_rn_y.append(good_rn[0])
 plt.plot(good_rn,good_rn_y,'.')
 
-plt.title('Scatter plot with lag1')
-plt.show()
-plt.hist(good_rn,bins=25,edgecolor='black')
-plt.title('Random numbers with uniform deviate')
+plt.xlabel('Good random numbers')
+plt.ylabel('list with lag=1')
+plt.title('Scatter plot of good rnd nos(lag=1)')
 plt.show()
 
-print('Mean: ',np.mean(good_rn))
-print('std_dev: ',np.std(good_rn))
-good_r = [(i - np.mean(good_rn)) for i in good_rn]
+mean_grn = np.mean(good_rn)
+std_grn = np.std(good_rn)
+
+plt.hist(good_rn,bins=25,edgecolor='black',label=f"$\mu$:{mean_grn:.2f}, $\sigma$:{std_grn:.2f}")
+plt.legend()
+plt.title('Random numbers with uniform deviate')
+plt.ylabel('counts')
+plt.show()
+'''
+good_r = [(i - mean_grn) for i in good_rn]
 result = np.correlate(good_r,good_r,mode='full')
-#cor = result[result.size // 2:] / (np.var(good_r) * len(good_r))
 sum_cor = sum(result)/len(result)
 print('corr: ',sum_cor)
-
+'''
 k_lag = []
 N = len(good_rn)
 mean_sq = np.mean(good_rn)**2
@@ -57,6 +63,10 @@ for k in range(N):
     k_lag.append(c)
 
 plt.plot(range(N),k_lag,'.')
+plt.title('Autocorrelation for good random numbers')
+plt.xlabel('lag')
+plt.ylabel('Autocorrelation')
+plt.grid(True)
 plt.show()
 
 k_lag = []
@@ -75,5 +85,9 @@ for k in range(N):
     k_lag.append(c)
 
 plt.plot(range(N),k_lag,'.')
+plt.title('Autocorrelation for bad random numbers')
+plt.xlabel('lag')
+plt.ylabel('Autocorrelation')
+plt.grid(True)
 plt.show()
 
