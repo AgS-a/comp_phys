@@ -38,7 +38,7 @@ double inf(double r1, double r2)
         return iftsml;
 }
 
-double norm(int n)
+double norm_brute(int n)
 {
         double upper_limit = 5;
         double nor = 0;
@@ -98,6 +98,14 @@ double brute_integral(int n, double *err)
         return (sum / n) * volume;
 
 }
+double norm_imp(int n)
+{
+        double fn = 0;
+        double sum = 0;
+        double sum_sq = 0;
+        double alpha = 2;
+
+}
 
 double imp_integral(int n, double *err)
 {
@@ -106,11 +114,13 @@ double imp_integral(int n, double *err)
         double sum_sq = 0;
         double alpha = 2;
 
-        double volume = (16 * 3.1415 * 3.1415) / (4 * alpha * alpha);
+        double volume = (( 2 * 2) * ( 2 * 3.1415 * 2 * 3.1415)) / (4 * alpha * alpha);
 
         for (int i = 0; i < n; i++) {
                 double r1 = -log(frand()) / (2 * alpha);
                 double r2 = -log(frand()) / (2 * alpha);
+                //double r1 = (log(2*alpha)-log(frand())) / (2 * alpha);
+                //double r2 = (log(2*alpha)-log(frand())) / (2 * alpha);
 
                 double theta1 = acos(2 * frand() - 1);
                 double theta2 = acos(2 * frand() - 1);
@@ -135,17 +145,18 @@ int main()
 
         srand(time(NULL));
 
-        double norm_const = norm(1000000);
+        double norm_const = norm_brute(1000000);
+        printf("%0.4f\n",sqrt(1/norm_const));
 
-        int tries[8] =
-            { 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000 };
+        int tries[7] =
+            { 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7 };
         FILE *fptr;
         fptr = fopen("interaction.dat","w");
 
         printf("Tries            Imp          Error_imp       Brute         Error_brute\n");
         fprintf(fptr,"Tries            Imp          Error_imp       Brute         Error_brute\n");
 
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 7; j++) {
                 double imp_err;
                 double brute_err;
 

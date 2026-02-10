@@ -19,7 +19,7 @@ double trap_int_pi(double n)
         double buf = 0;
         double sum = 0;
 
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i < n; i++) {
                 x2 = (i + 1) * (1 / n);
                 y2 = 4 / (1 + (pow(x2, 2)));
 
