@@ -1,0 +1,63 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define J_ising 1
+
+int neighbours(int m, int n, int i, int j)
+{
+        // FIRST ATOM OF THE SECOND ROW IS SHIFTED TO THE RIGHT BY SOME AMOUNT (finite triangular lattice case)
+        if (m%2 == 0) {
+              if (i == 0 && j == 0) {         // TOP LEFT CORNER
+                      int neigh[6][2] = { {0, 1}, {1, 0}, {0, n}, {1, n}, {m, 0}, {m, n} };
+              } else if (i == 0 && j == n) {  // TOP RIGHT CORNER
+                      int neigh[6][2] = { {1, n}, {1, n-1}, {0, n-1}, {m, n}, {m, n-1}, {0, 0} };
+              } else if (i == m && j == n) {  // BOTTOM RIGHT CORNER
+                      int neigh[6][2] = { {m, n-1}, {m-1, n}, {m, 0}, {0, n}, {0, 0}, {m-1, 0} };
+              } else if (i == m && j == 0) {  // BOTTOM LEFT CORNER
+                      int neigh[6][2] = { {m-1, 0}, {m-1, 1}, {m, 1}, {0, 0}, {0, 1}, {m, n} };
+              } else if (j == 0) {            // LEFT COLUMN
+                      if (i%2 == 0) {         // EVEN ROW
+                              int neigh[6][2] = { {i-1, 0}, {i+1, 0}, {i, 1}, {i-1, 1}, {i+1, 1}, {i, n} };
+                      } else {                // ODD ROW
+                              int neigh[6][2] = { {i-1, 0}, {i+1, 0}, {i, 1}, {i, n}, {i+1, n}, {i-1, n} };
+                      }
+              } else if (j == n) {            // RIGHT COLUMN
+                      if (i%2 == 0) {         // EVEN ROW
+                              int neigh[6][2] = { {i-1, n}, {i+1, n}, {i, 0}, {i, n-1}, {i+1, 0}, {i-1, 0} };
+                      } else {                // ODD ROW
+                              int neigh[6][2] = { {i-1, n}, {i-1, n-1}, {i+1, n}, {i+1, n-1}, {i, n-1}, {i, 0} };
+                      }
+              } else if (i == 0) {            // TOP ROW
+                      int neigh[6][2] = { {0, j-1}, {0, j+1}, {1, j-1}, {1, j}, {m, j-1}, {m, j} };
+              } else if (i == m) {            // BOTTOM ROW
+                      int neigh[6][2] = { {m, j-1}, {m, j+1}, {0, j+1}, {0, j}, {m-1, j}, {m-1, j+1} };
+              } else {                        // BULK
+                      int neigh[6][2] = { {i, j-1}, {i, j+1}, {i-1, j}, {i-1, j+1}, {i+1, j}, {i+1, j+1} };
+              }
+        } else {
+                printf("Enter even number of rows!\n");
+        }
+}
+
+int main()
+{
+        int L = 10;
+        int crystal[L][L];
+
+        // INITIALIZING SPINS
+        for(int i=0;i<L;i++) {
+                for(int j=0;j<L;j++) {
+                        crystal[i][j] = -1;
+                }
+        }
+        
+        // CALCULATING ENERGY
+        for(int i=0;i<L;i++) {
+                for(int j=0;j<L;j++) {
+                        int energy_spin = 0;
+                        for(int k=0;k<6;k++) {
+                                int E_ij = J_ising * 
+
+        return 0;
+}
+

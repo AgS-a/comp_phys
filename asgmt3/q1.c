@@ -7,7 +7,6 @@
 
 int main()
 {
-
         int L = 20;
         int crystal[L][L];
 
@@ -25,7 +24,7 @@ int main()
                         sum += crystal[i][j];
                 }
         }
-        double mu_s = -(g_e * mu_b * sum );
+        double mu_s = -(g_e * mu_b * sum/2 );
         printf("Magnetic moment: %e J/T\n",mu_s);
 
         return 0;
