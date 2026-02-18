@@ -4,10 +4,7 @@
 #include<time.h>
 #include<math.h>
 
-int L  = 10;
-int niter = 50000;
-double KbT = 3.9;
-int J_ising = 1;
+int J_ising = -1;
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
@@ -15,8 +12,8 @@ void neighbours(int m, int n, int i, int j, int res_neigh[6][2])
 {
         // FIRST ATOM OF THE SECOND ROW IS SHIFTED TO THE RIGHT BY SOME AMOUNT (finite triangular lattice case)
         if (m%2 == 0) {
-                m = m-1;
-                n = n-1;
+                m = m - 1;
+                n = n - 1;
               if (i == 0 && j == 0) {         // TOP LEFT CORNER
                       int neigh[6][2] = { {0, 1}, {1, 0}, {0, n}, {1, n}, {m, 0}, {m, n} };
                       memcpy(res_neigh,neigh,sizeof(neigh));
@@ -71,11 +68,10 @@ int random_spin()
         }
         return n;
 }
-
-int main()
+void Ising_L(int L)
 {
-        srand(time(NULL));
-
+        double KbT = 3.7;
+        int niter = 50000;
         int crystal[L][L];
         int cur_neigh[6][2];
 
@@ -87,7 +83,13 @@ int main()
         }
 
         FILE *fPtr;
-        fPtr = fopen("q3.dat","w");
+        char name1[64];
+        sprintf(name1,"L_mag_%d.dat",L);
+        fPtr = fopen(name1,"w");
+        FILE *fPt;
+        char name2[64];
+        sprintf(name2,"L_E_%d.dat",L);
+        fPt = fopen(name2,"w");
 
         for(int k=0;k<niter;k++) {
                 for(int i=0;i<L;i++) {
@@ -99,7 +101,7 @@ int main()
                                 for(int z=0;z<6;z++) {
                                         int pos1 = cur_neigh[z][0];
                                         int pos2 = cur_neigh[z][1];
-                                        int E_ij = -J_ising * crystal[a][b] * crystal[pos1][pos2];
+                                        int E_ij = J_ising * crystal[a][b] * crystal[pos1][pos2];
                                         Ei += E_ij;
                                 }
                                 int Ef = -Ei;
@@ -120,10 +122,40 @@ int main()
                         }
                 }
                 double magnetization = (double)magnetic_moment/(L*L);
-                fprintf(fPtr,"%0.15f",magnetization);
-                fprintf(fPtr,"\n");
+                fprintf(fPtr,"%0.15f\n",magnetization);
+
+                double total_energy = 0;
+                // CALCULATING ENERGY
+                for(int p=0;p<L;p++) {
+                        for(int q=0;q<L;q++) {
+                                neighbours(L,L,p,q,cur_neigh);
+                                int energy_spin = 0;
+                                for(int z=0;z<6;z++) {
+                                        int pos1 = cur_neigh[z][0];
+                                        int pos2 = cur_neigh[z][1];
+                                        int E_ij = J_ising * crystal[p][q] * crystal[pos1][pos2];
+                                        energy_spin += E_ij;
+                                }
+                                total_energy += energy_spin;
+                        }
+                }
+                double e_perspin = total_energy/(2*L*L);
+                //fprintf(fPt,"%0.15f\n",e_perspin);
         }
+
         fclose(fPtr);
+        fclose(fPt);
+}
+
+int main()
+{
+        srand(time(NULL));
+        int size;
+        for(int i=0;i<2;i++) {
+                size = (i+6) * 10;
+                Ising_L(size);
+        }
+
         return 0;
 }
 
