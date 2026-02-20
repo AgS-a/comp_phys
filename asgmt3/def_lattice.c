@@ -6,6 +6,8 @@ void neighbours(int m, int n, int i, int j, int res_neigh[6][2])
 {
         // FIRST ATOM OF THE SECOND ROW IS SHIFTED TO THE RIGHT BY SOME AMOUNT (finite triangular lattice case)
         if (m%2 == 0) {
+                m = m - 1;
+                n = n - 1;
               if (i == 0 && j == 0) {         // TOP LEFT CORNER
                       int neigh[6][2] = { {0, 1}, {1, 0}, {0, n}, {1, n}, {m, 0}, {m, n} };
                       memcpy(res_neigh,neigh,sizeof(neigh));

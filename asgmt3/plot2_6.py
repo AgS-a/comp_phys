@@ -7,7 +7,7 @@ with open("q3.dat","r") as q3_dat:
         q3.append(float(lines.strip()))
 
 plt.plot(q3,'-')
-plt.title('Magnetization at each iteration(KbT=4.9,L=10)')
+plt.title('Magnetization at each iteration(KbT=4.9,L=30)')
 plt.ylabel('Magnetization')
 plt.legend()
 plt.show()
@@ -27,7 +27,7 @@ with open("q5_mag.dat","r") as q5_mag_dat:
         q5_mag.append(float(lines.strip()))
 
 plt.plot(q5_mag,'-')
-plt.title('Magnetization at each iteration(KbT=4.05,L=10)')
+plt.title('Magnetization at each iteration(KbT=4.05,L=30)')
 plt.ylabel('Magnetization')
 plt.show()
 
@@ -40,58 +40,59 @@ plt.plot(q5_E,'-')
 plt.ylabel('Energy per spin')
 plt.show()
 
-q6_mag_8 = []
-with open("q6_mag_8.dat", "r") as q6_mag_8_dat:
-    for lines in q6_mag_8_dat:
-        q6_mag_8.append(float(lines.strip()))
+q6_mag_24 = []
+with open("q6_mag_24.dat", "r") as q6_mag_24_dat:
+    for lines in q6_mag_24_dat:
+        q6_mag_24.append(float(lines.strip()))
 
-plt.plot(q6_mag_8, '-')
-plt.title('Magnetization at each iteration(KbT=3.9,L=8)')
+plt.plot(q6_mag_24, '-')
+plt.title('Magnetization at each iteration(KbT=3.9,L=24)')
 plt.ylabel('Magnetization')
 plt.show()
 
-q6_E_8 = []
-with open("q6_E_8.dat", "r") as q6_E_8_dat:
-    for lines in q6_E_8_dat:
-        q6_E_8.append(float(lines.strip()))
+q6_E_24 = []
+with open("q6_E_24.dat", "r") as q6_E_24_dat:
+    for lines in q6_E_24_dat:
+        q6_E_24.append(float(lines.strip()))
 
-plt.plot(q6_E_8, '-')
+plt.plot(q6_E_24, '-')
 plt.ylabel('Energy per spin')
 plt.show()
 
-q6_mag_10 = []
-with open("q6_mag_10.dat", "r") as q6_mag_10_dat:
-    for lines in q6_mag_10_dat:
-        q6_mag_10.append(float(lines.strip()))
+q6_mag_30 = []
+with open("q6_mag_30.dat", "r") as q6_mag_30_dat:
+    for lines in q6_mag_30_dat:
+        q6_mag_30.append(float(lines.strip()))
 
-plt.plot(q6_mag_10, '-')
-plt.title('Magnetization at each iteration(KbT=3.9,L=10)')
+plt.plot(q6_mag_30, '-')
+plt.title('Magnetization at each iteration(KbT=3.9,L=30)')
 plt.ylabel('Magnetization')
 plt.show()
 
-q6_E_10 = []
-with open("q6_E_10.dat", "r") as q6_E_10_dat:
-    for lines in q6_E_10_dat:
-        q6_E_10.append(float(lines.strip()))
+q6_E_30 = []
+with open("q6_E_30.dat", "r") as q6_E_30_dat:
+    for lines in q6_E_30_dat:
+        q6_E_30.append(float(lines.strip()))
 
-plt.plot(q6_E_10, '-')
+plt.plot(q6_E_30, '-')
 plt.ylabel('Energy per spin')
 plt.show()
 
-q6_mag_12 = []
-with open("q6_mag_12.dat", "r") as q6_mag_12_dat:
-    for lines in q6_mag_12_dat:
-        q6_mag_12.append(float(lines.strip()))
+q6_mag_36 = []
+with open("q6_mag_36.dat", "r") as q6_mag_36_dat:
+    for lines in q6_mag_36_dat:
+        q6_mag_36.append(float(lines.strip()))
 
-plt.plot(q6_mag_12, '-')
+plt.plot(q6_mag_36, '-')
 plt.ylabel('Magnetization')
+plt.title('Magnetization at each iteration(KbT=3.9,L=36)')
 plt.show()
 
-q6_E_12 = []
-with open("q6_E_12.dat", "r") as q6_E_12_dat:
-    for lines in q6_E_12_dat:
-        q6_E_12.append(float(lines.strip()))
+q6_E_36 = []
+with open("q6_E_36.dat", "r") as q6_E_36_dat:
+    for lines in q6_E_36_dat:
+        q6_E_36.append(float(lines.strip()))
 
-plt.plot(q6_E_12, '-')
+plt.plot(q6_E_36, '-')
 plt.ylabel('Energy per spin')
 plt.show()

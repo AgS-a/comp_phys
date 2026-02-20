@@ -1,3 +1,6 @@
+// Code to generate 10000 "good" random numbers between 0 and 1
+// Writing to file "random.dat"
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>

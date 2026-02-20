@@ -4,7 +4,7 @@
 #include<time.h>
 #include<math.h>
 
-int L  = 10;
+int L  = 30;
 double KbT = 3.9;
 int J_ising = 1;
 

@@ -1,3 +1,6 @@
+! Function for generating bad random numbers. 
+! Converted to C code using the same logic in "bad_rand.c"       
+
       real(8) function bad_rnd()
               implicit none
               integer :: iran = 13337

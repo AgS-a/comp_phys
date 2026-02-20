@@ -55,7 +55,7 @@ void neighbours(int m, int n, int i, int j, int result[6][2])
 
 int main()
 {
-        int L = 10;
+        int L = 30;
         int crystal[L][L];
 
         // INITIALIZING SPINS

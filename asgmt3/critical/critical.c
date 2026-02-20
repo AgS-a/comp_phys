@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 #include<time.h>
+#include<string.h>
 #include<math.h>
 
+int L  = 64;
+double KbT = 3.64;
 int J_ising = 1;
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
@@ -68,11 +70,14 @@ int random_spin()
         }
         return n;
 }
-void Ising_L(int L, double KbT)
-{       
-        int stat_data = 1000000;
-        int eqb_steps = 10000;
-        int niter = stat_data + eqb_steps;
+int main()
+{
+        clock_t begin = clock();
+
+        srand(time(NULL));
+        
+        int niter = 240000;
+
         int crystal[L][L];
         int cur_neigh[6][2];
 
@@ -84,13 +89,9 @@ void Ising_L(int L, double KbT)
         }
 
         FILE *fPtr;
-        char name1[64];
-        sprintf(name1,"q6_mag_%d_%f.dat",L,KbT);
-        fPtr = fopen(name1,"w");
+        fPtr = fopen("critical_mag.dat","w");
         FILE *fPt;
-        char name2[64];
-        sprintf(name2,"q6_E_%d_%f.dat",L,KbT);
-        fPt = fopen(name2,"w");
+        fPt = fopen("critical_E.dat","w");
 
         for(int k=0;k<niter;k++) {
                 for(int i=0;i<L;i++) {
@@ -123,9 +124,7 @@ void Ising_L(int L, double KbT)
                         }
                 }
                 double magnetization = (double)magnetic_moment/(L*L);
-                if(k >= eqb_steps){
-                        fprintf(fPtr,"%0.15f\n",magnetization);
-                }
+                fprintf(fPtr,"%0.8f\n",magnetization);
 
                 double total_energy = 0;
                 // CALCULATING ENERGY
@@ -143,24 +142,15 @@ void Ising_L(int L, double KbT)
                         }
                 }
                 double e_perspin = total_energy/(2*L*L);
-                if(k >= eqb_steps){
-                        fprintf(fPt,"%0.15f\n",e_perspin);
-                }
+                fprintf(fPt,"%0.8f\n",e_perspin);
         }
 
         fclose(fPtr);
         fclose(fPt);
-}
 
-int main()
-{
-        srand(time(NULL));
-        int Length = [26,30,36];
-        for(int i=0;i<3;i++){
-                for(int j=0;j<46;j++){
-                        Ising_L(Length[i],3.8+(0.02*j));
-                }
-        }
+        clock_t end = clock();
+        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
+        printf("\nSuccessfully finished running in %.8f s.\n",time_spent);
 
         return 0;
 }

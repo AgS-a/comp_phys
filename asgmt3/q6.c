@@ -149,11 +149,17 @@ void Ising_L(int L)
 
 int main()
 {
+        clock_t begin = clock();
+
         srand(time(NULL));
         
-        Ising_L(8);
-        Ising_L(10);
-        Ising_L(12);
+        Ising_L(24);
+        Ising_L(30);
+        Ising_L(36);
+
+        clock_t end = clock();
+        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
+        printf("\nFinished running in %f s.\n",time_spent);
 
         return 0;
 }
