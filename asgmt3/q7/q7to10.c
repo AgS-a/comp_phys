@@ -7,8 +7,6 @@
 
 int J_ising = 1;
 
-#define frand() ((double) rand() / (RAND_MAX+1.0))
-
 void neighbours(int m, int n, int i, int j, int res_neigh[6][2])
 {
         // FIRST ATOM OF THE SECOND ROW IS SHIFTED TO THE RIGHT BY SOME AMOUNT (finite triangular lattice case)
@@ -57,10 +55,10 @@ void neighbours(int m, int n, int i, int j, int res_neigh[6][2])
                 printf("Enter even number of rows!\n");
         }
 }
-int random_spin()
+int random_spin(unsigned int *seed)
 {
         int n;
-        float x = (rand() % 2) + 1;
+        float x = (rand_r(seed) % 2) + 1; // using rand_r to avoid race conditions?
 
         if (x == 1) {
                 n = 1;
@@ -69,7 +67,7 @@ int random_spin()
         }
         return n;
 }
-void Ising_L(int L, double KbT)
+void Ising_L(int L, double KbT, unsigned int seed)
 {       
         int stat_data = 1000000;
         int eqb_steps = 10000;
@@ -80,24 +78,24 @@ void Ising_L(int L, double KbT)
         // INITIALIZING SPINS
         for(int i=0;i<L;i++) {
                 for(int j=0;j<L;j++) {
-                        crystal[i][j] = random_spin();
+                        crystal[i][j] = random_spin(&seed);
                 }
         }
 
         FILE *fPtr;
         char name1[64];
-        sprintf(name1,"q6_mag_L%d_T%.2f.dat",L,KbT);
+        sprintf(name1,"mag_L%d_T%.2f.dat",L,KbT);
         fPtr = fopen(name1,"w");
         FILE *fPt;
         char name2[64];
-        sprintf(name2,"q6_E_L%d_T%.2f.dat",L,KbT);
+        sprintf(name2,"E_L%d_T%.2f.dat",L,KbT);
         fPt = fopen(name2,"w");
 
         for(int k=0;k<niter;k++) {
                 for(int i=0;i<L;i++) {
                         for(int j=0;j<L;j++) {
-                                int a = rand() % (L);
-                                int b = rand() % (L);
+                                int a = rand_r(&seed) % (L);
+                                int b = rand_r(&seed) % (L);
                                 neighbours(L,L,a,b,cur_neigh);
                                 int Ei = 0;
                                 for(int z=0;z<6;z++) {
@@ -111,7 +109,7 @@ void Ising_L(int L, double KbT)
                                         crystal[a][b] = -crystal[a][b];
                                 } else{
                                         double P = exp(-(Ef-Ei)/(KbT));
-                                        if (frand() < P){
+                                        if ( ((double)rand_r(&seed) / (RAND_MAX+1.0)) < P){
                                                 crystal[a][b] = -crystal[a][b];
                                         }
                                 }
@@ -125,7 +123,7 @@ void Ising_L(int L, double KbT)
                 }
                 double magnetization = (double)magnetic_moment/(L*L);
                 if(k >= eqb_steps){
-                        fprintf(fPtr,"%0.15f\n",magnetization);
+                        fprintf(fPtr,"%0.12f\n",magnetization);
                 }
 
                 double total_energy = 0;
@@ -145,10 +143,9 @@ void Ising_L(int L, double KbT)
                 }
                 double e_perspin = total_energy/(2*L*L);
                 if(k >= eqb_steps){
-                        fprintf(fPt,"%0.15f\n",e_perspin);
+                        fprintf(fPt,"%0.12f\n",e_perspin);
                 }
         }
-
         fclose(fPtr);
         fclose(fPt);
 }
@@ -157,11 +154,13 @@ int main()
 {
         double begin = omp_get_wtime();
 
-        srand(time(NULL));
         int Length[] = {26, 30, 36};
+
+        #pragma omp parallel for collapse(2)
         for(int i=0;i<3;i++){
-                for(int j=0;j<46;j++){
-                        Ising_L(Length[i],3.8+(0.02*j));
+                for(int j=0;j<71;j++){
+                        unsigned int local_seed = time(NULL) + (i * 100) + j;
+                        Ising_L(Length[i], 3.3+(0.02*j), local_seed);
                 }
         }
         double end = omp_get_wtime();
