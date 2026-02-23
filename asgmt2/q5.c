@@ -1,4 +1,12 @@
-// Buffon's needle experiment
+// Buffon's needle experiment:
+// A needle of length l is thrown on a floor with parallel lines separated
+// by lenght d. Find probability that the needle intersects the line.
+// value of pi can be determined using the probability and the analytical 
+// expression for the probability.
+//
+// "actual value" of pi taken for comparison: 4tan-1(1)
+// 
+// error in pi(by varying no of throws) is written to the file "buffon.dat"
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -7,25 +15,23 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-double l = 7;                   //length of the needle
-int d = 11;                     //separation between lines
-int D = 1000000;
-double rand_nos[2];
+double l = 7;                   // length of the needle
+int d = 11;                     // separation between lines
+int D = 1000000;                // number of lines
 
+// Function to randomly place the needle
+// Placed by choosing random center and random angle from the vertical
 double pos_det(double ned_pos[])
 {
-        rand_nos[0] = frand();
-        rand_nos[1] = frand();
+        double center = frand() * D;    // random x coordinate for center
+        double theta = frand() * (4 * atan(1)); // random angle with vertical
+        // PROBLEM: code to find pi is using pi to generate random angle
 
-        //double theta = atan2(rand_nos[0],rand_nos[1]); // theta //
-        double theta = frand() * (4 * atan(1)); // theta //
-        //double theta = frand() * 1000; // theta //
-        double center = frand() * D;    //center
-
-        ned_pos[0] = -((l * sin(theta)) / 2) + center;
-        ned_pos[1] = ((l * sin(theta)) / 2) + center;
+        ned_pos[0] = -((l * sin(theta)) / 2) + center; // x1 of the needle
+        ned_pos[1] = ((l * sin(theta)) / 2) + center; // x2 of the needle
 }
 
+// Function to determine pi from the probability of intersection obtained
 double pi_est(double probability)
 {
         double pi = (2 * l) / (d * probability);
@@ -57,40 +63,28 @@ int touch_check(double x1, double x2)
 
 int main()
 {
-
         srand(time(NULL));
 
-        //int n = 100000;
-        //double x[n+2]; 
-        //x[0] = 0;
-        //double d = (double)D/(double)n;
-/*
-    for(int i=0; i<n+1; i++) {
-        x[i+1] = x[i] + d;
-    }
-*/
         double ned_pos[2];
         int check;
-        int sum = 0;
         int no_tries[8] =
-            { 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000 };
+            {1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8};
 
         FILE *fptr;
         fptr = fopen("buffon.dat", "w");
 
         for (int j = 0; j < 8; j++) {
+                int sum = 0;
                 for (int i = 0; i < no_tries[j]; i++) {
                         pos_det(ned_pos);
                         check = touch_check(ned_pos[0], ned_pos[1]);
                         sum += check;
                 }
                 double prob = sum / (double)no_tries[j];
-                sum = 0;
                 double err = fabs(pi_est(prob) - 4 * atan(1));
-                printf("value of pi(on throwing %9d times): ", no_tries[j]);
-                printf("%f\n", pi_est(prob));
-                printf("error in value of pi: ");
-                printf("%f\n", err);
+
+                printf("value of pi(on throwing %9d times): %f\n", no_tries[j], pi_est(prob));
+                printf("error in value of pi: %f\n", err);
                 fprintf(fptr, "%f\n", err);
         }
 

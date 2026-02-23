@@ -1,3 +1,8 @@
+// Code to find interaction energy between the electrons of He atom in a.u.
+// 2 kinds of monte carlo integration done: normal and importance sampling
+//
+// Values of energy and error written to file "interaction.dat"
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>

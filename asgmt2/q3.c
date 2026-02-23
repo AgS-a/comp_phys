@@ -1,3 +1,6 @@
+// Code to sample random numbers from exponential and normal distributions
+// Writing to files "exp.dat" and "gau.dat"
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
@@ -10,18 +13,19 @@ int main()
 
         srand(time(NULL));
 
-        FILE *fptr;
-        fptr = fopen("exp.dat", "w");
-
         int n = 100000;
 
         double expx[n];
-        double exp_norm = 0;
-
+        
+        // Generating random numbers following exponential distribution
+        // from random numbers following uniform distribution using
+        // Inverse method
         for (int i = 0; i < n; i++) {
                 expx[i] = -log(frand()) / 2;
-                exp_norm += expx[i];
         }
+
+        FILE *fptr;
+        fptr = fopen("exp.dat", "w");
 
         for (int i = 0; i < n; i++) {
                 fprintf(fptr, "%f\n", expx[i]);
@@ -29,21 +33,19 @@ int main()
         fclose(fptr);
 
         double gauss[n];
-        double x[n];
 
         double mean = 0;
         double std_dev = 2;
         double var = std_dev * std_dev;
-        double gauss_norm = 0;
 
+        // Generating random numbers following normal distribution
+        // from random numbers following uniform distribution using
+        // Box-Muller method
         for (int i = 0; i < n; i++) {
-                //double rn = frand();
-                //x[i] = rn;
                 double rn =
                     sqrt(-2 * log(frand())) * cos(2 * 3.1415 * frand()) *
                     std_dev;
                 gauss[i] = rn;
-                gauss_norm += gauss[i];
         }
 
         FILE *fpt;
@@ -53,14 +55,6 @@ int main()
                 fprintf(fpt, "%f\n", gauss[i]);
         }
         fclose(fpt);
-/*
-    FILE*fp;;
-    fp = fopen("x.dat","w");
 
-    for(int i=0;i<n;i++) {
-        fprintf(fp,"%f\n",x[i]);
-    }
-    fclose(fp);
-*/
         return 0;
 }
