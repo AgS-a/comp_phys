@@ -3,6 +3,7 @@
 #include<string.h>
 #include<time.h>
 #include<math.h>
+#include<omp.h>
 
 int J_ising = 1;
 
@@ -85,11 +86,11 @@ void Ising_L(int L, double KbT)
 
         FILE *fPtr;
         char name1[64];
-        sprintf(name1,"q6_mag_%d_%f.dat",L,KbT);
+        sprintf(name1,"q6_mag_L%d_T%.2f.dat",L,KbT);
         fPtr = fopen(name1,"w");
         FILE *fPt;
         char name2[64];
-        sprintf(name2,"q6_E_%d_%f.dat",L,KbT);
+        sprintf(name2,"q6_E_L%d_T%.2f.dat",L,KbT);
         fPt = fopen(name2,"w");
 
         for(int k=0;k<niter;k++) {
@@ -154,13 +155,17 @@ void Ising_L(int L, double KbT)
 
 int main()
 {
+        double begin = omp_get_wtime();
+
         srand(time(NULL));
-        int Length = [26,30,36];
+        int Length[] = {26, 30, 36};
         for(int i=0;i<3;i++){
                 for(int j=0;j<46;j++){
                         Ising_L(Length[i],3.8+(0.02*j));
                 }
         }
+        double end = omp_get_wtime();
+        printf("\nSuccessfully finished running in %.8f s.\n", end - begin);
 
         return 0;
 }

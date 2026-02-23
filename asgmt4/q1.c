@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 double dx = 0.01;
 double y_init = 0;
@@ -46,9 +47,12 @@ double RK4()
 
 int main()
 {
-        
+        clock_t begin = clock();
         
 
+        clock_t end = clock();
+        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
+        printf("\nSuccessfully finished running in %.8f s.\n",time_spent);
 
         return 0;
 }
