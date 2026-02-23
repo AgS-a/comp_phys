@@ -1,0 +1,183 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
+#include <omp.h> // Included for OpenMP
+
+int J_ising = 1;
+
+void neighbours(int m, int n, int i, int j, int res_neigh[6][2])
+{
+        // FIRST ATOM OF THE SECOND ROW IS SHIFTED TO THE RIGHT BY SOME AMOUNT (finite triangular lattice case)
+        if (m%2 == 0) {
+                m = m - 1;
+                n = n - 1;
+              if (i == 0 && j == 0) {         // TOP LEFT CORNER
+                      int neigh[6][2] = { {0, 1}, {1, 0}, {0, n}, {1, n}, {m, 0}, {m, n} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              } else if (i == 0 && j == n) {  // TOP RIGHT CORNER
+                      int neigh[6][2] = { {1, n}, {1, n-1}, {0, n-1}, {m, n}, {m, n-1}, {0, 0} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              } else if (i == m && j == n) {  // BOTTOM RIGHT CORNER
+                      int neigh[6][2] = { {m, n-1}, {m-1, n}, {m, 0}, {0, n}, {0, 0}, {m-1, 0} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              } else if (i == m && j == 0) {  // BOTTOM LEFT CORNER
+                      int neigh[6][2] = { {m-1, 0}, {m-1, 1}, {m, 1}, {0, 0}, {0, 1}, {m, n} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              } else if (j == 0) {            // LEFT COLUMN
+                      if (i%2 == 0) {         // EVEN ROW
+                              int neigh[6][2] = { {i-1, 0}, {i+1, 0}, {i, 1}, {i-1, 1}, {i+1, 1}, {i, n} };
+                              memcpy(res_neigh,neigh,sizeof(neigh));
+                      } else {                // ODD ROW
+                              int neigh[6][2] = { {i-1, 0}, {i+1, 0}, {i, 1}, {i, n}, {i+1, n}, {i-1, n} };
+                              memcpy(res_neigh,neigh,sizeof(neigh));
+                      }
+              } else if (j == n) {            // RIGHT COLUMN
+                      if (i%2 == 0) {         // EVEN ROW
+                              int neigh[6][2] = { {i-1, n}, {i+1, n}, {i, 0}, {i, n-1}, {i+1, 0}, {i-1, 0} };
+                              memcpy(res_neigh,neigh,sizeof(neigh));
+                      } else {                // ODD ROW
+                              int neigh[6][2] = { {i-1, n}, {i-1, n-1}, {i+1, n}, {i+1, n-1}, {i, n-1}, {i, 0} };
+                              memcpy(res_neigh,neigh,sizeof(neigh));
+                      }
+              } else if (i == 0) {            // TOP ROW
+                      int neigh[6][2] = { {0, j-1}, {0, j+1}, {1, j-1}, {1, j}, {m, j-1}, {m, j} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              } else if (i == m) {            // BOTTOM ROW
+                      int neigh[6][2] = { {m, j-1}, {m, j+1}, {0, j+1}, {0, j}, {m-1, j}, {m-1, j+1} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              } else {                        // BULK
+                      int neigh[6][2] = { {i, j-1}, {i, j+1}, {i-1, j}, {i-1, j+1}, {i+1, j}, {i+1, j+1} };
+                      memcpy(res_neigh,neigh,sizeof(neigh));
+              }
+        } else {
+                printf("Enter even number of rows!\n");
+        }
+}
+
+// Pass thread-local seed to avoid race conditions
+int random_spin(unsigned int *seed)
+{
+        int n;
+        float x = (rand_r(seed) % 2) + 1;
+
+        if (x == 1) {
+                n = 1;
+        } else {
+                n = -1;
+        }
+        return n;
+}
+
+// Accept seed parameter for local PRNG
+void Ising_L(int L, double KbT, unsigned int seed)
+{       
+        int stat_data = 1000000;
+        int eqb_steps = 10000;
+        int niter = stat_data + eqb_steps;
+        int crystal[L][L];
+        int cur_neigh[6][2];
+
+        // INITIALIZING SPINS using local seed
+        for(int i=0;i<L;i++) {
+                for(int j=0;j<L;j++) {
+                        crystal[i][j] = random_spin(&seed);
+                }
+        }
+
+        FILE *fPtr;
+        char name1[64];
+        sprintf(name1,"q6_mag_%d_%f.dat",L,KbT);
+        fPtr = fopen(name1,"w");
+        
+        FILE *fPt;
+        char name2[64];
+        sprintf(name2,"q6_E_%d_%f.dat",L,KbT);
+        fPt = fopen(name2,"w");
+
+        for(int k=0;k<niter;k++) {
+                for(int i=0;i<L;i++) {
+                        for(int j=0;j<L;j++) {
+                                int a = rand_r(&seed) % (L);
+                                int b = rand_r(&seed) % (L);
+                                neighbours(L,L,a,b,cur_neigh);
+                                int Ei = 0;
+                                for(int z=0;z<6;z++) {
+                                        int pos1 = cur_neigh[z][0];
+                                        int pos2 = cur_neigh[z][1];
+                                        int E_ij = -J_ising * crystal[a][b] * crystal[pos1][pos2];
+                                        Ei += E_ij;
+                                }
+                                int Ef = -Ei;
+                                if (Ef <= Ei){
+                                        crystal[a][b] = -crystal[a][b];
+                                } else{
+                                        double P = exp(-(Ef-Ei)/(KbT));
+                                        // Inline frand() logic with local seed
+                                        double rand_prob = (double)rand_r(&seed) / (RAND_MAX+1.0);
+                                        if (rand_prob < P){
+                                                crystal[a][b] = -crystal[a][b];
+                                        }
+                                }
+                        }
+                }
+                int magnetic_moment = 0;
+                for(int p=0;p<L;p++){
+                        for(int q=0;q<L;q++){
+                                magnetic_moment += crystal[p][q];
+                        }
+                }
+                double magnetization = (double)magnetic_moment/(L*L);
+                if(k >= eqb_steps){
+                        fprintf(fPtr,"%0.15f\n",magnetization);
+                }
+
+                double total_energy = 0;
+                // CALCULATING ENERGY
+                for(int p=0;p<L;p++) {
+                        for(int q=0;q<L;q++) {
+                                neighbours(L,L,p,q,cur_neigh);
+                                int energy_spin = 0;
+                                for(int z=0;z<6;z++) {
+                                        int pos1 = cur_neigh[z][0];
+                                        int pos2 = cur_neigh[z][1];
+                                        int E_ij = -J_ising * crystal[p][q] * crystal[pos1][pos2];
+                                        energy_spin += E_ij;
+                                }
+                                total_energy += energy_spin;
+                        }
+                }
+                double e_perspin = total_energy/(2*L*L);
+                if(k >= eqb_steps){
+                        fprintf(fPt,"%0.15f\n",e_perspin);
+                }
+        }
+
+        fclose(fPtr);
+        fclose(fPt);
+}
+
+int main()
+{
+        // Use OpenMP wall-clock timer for parallel execution
+        double begin = omp_get_wtime(); 
+
+        int Length[] = {26, 30, 36}; // Fixed array syntax
+
+        // Parallelize the two outer loops
+        #pragma omp parallel for collapse(2)
+        for(int i=0;i<3;i++){
+                for(int j=0;j<46;j++){
+                        // Generate a strictly unique seed for every iteration
+                        unsigned int local_seed = 123456789 ^ (Length[i] << 16) ^ j ^ (unsigned int)time(NULL);
+                        
+                        Ising_L(Length[i], 3.8+(0.02*j), local_seed);
+                }
+        }
+        
+        double end = omp_get_wtime();
+        printf("\nSuccessfully finished running in %.8f s.\n", end - begin);
+
+        return 0;
+}
