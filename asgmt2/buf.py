@@ -15,6 +15,7 @@ slope, intercept = np.polyfit(num_log,diff_log,1)
 fit_x = np.linspace(min(num),max(num),1000)
 fit_y = [(i**slope)*(10**intercept) for i in fit_x]
 
+print("HELLO")
 plt.loglog(num,diff,'.')
 plt.loglog(fit_x,fit_y,label=f'slope: {slope:.3f}')
 plt.xlabel('throws')
