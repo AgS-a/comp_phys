@@ -13,12 +13,14 @@ double f_y(double y)
 
 double euler()
 {
-
+        while (y_n != y_n_minus_1) {
+                y_n = y_n + (f_y(y_n) * dx);
+        }
 }
 
-double modified_euler()
+double modified_euler() // Heun's method
 {
-
+        
 }
 
 double improved_euler()
