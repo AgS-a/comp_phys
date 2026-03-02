@@ -25,6 +25,7 @@ int main()
                 }
         }
         double mu_s = -(g_e * mu_b * sum/2 );
+        printf("Magnetic moment: %d (Simulation units)\n",sum);
         printf("Magnetic moment: %e J/T\n",mu_s);
 
         return 0;

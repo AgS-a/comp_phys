@@ -6,7 +6,7 @@
 
 int L  = 30;
 int niter = 50000;
-double KbT = 3.9;
+double KbT = 4.9;
 int J_ising = 1;
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))

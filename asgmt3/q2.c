@@ -76,7 +76,7 @@ int main()
                         for(int k=0;k<6;k++) {
                                 int pos1 = cur_neigh[k][0];
                                 int pos2 = cur_neigh[k][1];
-                                int E_ij = J_ising * crystal[i][j] * crystal[pos1][pos2];
+                                int E_ij = -J_ising * crystal[i][j] * crystal[pos1][pos2];
                                 energy_spin += E_ij;
                         }
                         total_energy += energy_spin;
