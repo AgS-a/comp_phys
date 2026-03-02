@@ -4,10 +4,10 @@
 #include<time.h>
 #include<math.h>
 
-int L  = 30;
+int L  = 10;
 int niter = 50000;
 double KbT = 1.0;
-int J_ising = 1;
+int J_ising = 1; //Try doing for anti-ferromagnetic case, plot spins after certain no. of iterations.
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
