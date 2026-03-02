@@ -18,7 +18,7 @@ double euler()
         }
 }
 
-double modified_euler() // Heun's method
+double modified_euler() // Heun's method //just half the grid size?
 {
         
 }
