@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import math
 
 cai26 = []
 with open("cai_L26_m.dat","r") as cai26_dat:
@@ -48,6 +48,21 @@ plt.show()
 plt.plot(T,cv26,'.',label='L=26')
 plt.plot(T,cv30,'.',label='L=30')
 plt.plot(T,cv36,'.',label='L=36')
+'''
+# --- New Code Start ---
+# Find T corresponding to max Cv for the largest system (L=36)
+max_cv_val = max(cv36)
+max_cv_index = cv36.index(max_cv_val)
+T_max = T[max_cv_index]
+
+# Theoretical Tc for triangular lattice = 4 / ln(3)
+Tc_theory = 4.0 / math.log(3)
+
+# Add vertical dotted lines
+plt.axvline(x=T_max, color='k', linestyle=':', label='Max Cv (L=36)')
+plt.axvline(x=Tc_theory, color='r', linestyle=':', label='Theoretical Tc')
+# --- New Code End ---
+'''
 plt.legend()
 plt.grid(True)
 plt.xlabel('Temperature(reduced units)')

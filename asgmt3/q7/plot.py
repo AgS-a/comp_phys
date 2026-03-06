@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import math # Added for log calculation
 
 cai26 = []
 with open("cai_L26.dat","r") as cai26_dat:
@@ -71,6 +72,21 @@ plt.plot(T,cv30,'.',label='L=30')
 #plt.show()
 
 plt.plot(T,cv36,'.',label='L=36')
+
+# --- New Code Start (Calculations) ---
+# Find T for max Cv (L=36)
+max_val = max(cv36)
+max_idx = cv36.index(max_val)
+T_max = T[max_idx]
+
+# Theoretical Tc
+Tc_theory = 3.64
+
+# Add lines to Cv plot
+plt.axvline(x=T_max, color='k', linestyle=':', label='Max Cv (L=36)')
+plt.axvline(x=Tc_theory, color='r', linestyle=':', label='Theoretical Tc')
+# --- New Code End ---
+
 plt.grid(True)
 plt.legend()
 plt.title(f'$C_v$ vs T')
@@ -96,6 +112,12 @@ with open("binder_L36.dat","r") as binder36_dat:
 plt.plot(T,binder26,'.',label='L=26')
 plt.plot(T,binder30,'.',label='L=30')
 plt.plot(T,binder36,'.',label='L=36')
+
+# --- New Code Start (Binder Lines) ---
+# Add same lines to Binder plot
+plt.axvline(x=Tc_theory, color='r', linestyle=':', label='Theoretical Tc')
+# --- New Code End ---
+
 plt.legend()
 plt.grid(True)
 plt.title('Binders cumulant plot')
