@@ -15,27 +15,44 @@ double RK4_solver(double initial_x, double initial_v)
 {
         int n_iter = 5000
 
-        FILE *RK;
-        char name_RK[64];
-        sprintf(name_RK,"RK4_sinx_x0%.4fv0%.4f.dat",initial_x,initial_v);
-        RK = fopen(name_RK,"w");
+        FILE *x_file;
+        char name_x[64];
+        sprintf(name_x,"sinx_x0%.4f.dat",initial_x);
+        x_file = fopen(name_x,"w");
+
+        FILE *v_file;
+        char name_v[64];
+        sprintf(name_v,"sinx_v0%.4f.dat",initial_v);
+        v_file = fopen(name_v,"w");
 
         double k1_v,k2_v,k3_v,k4_v;
         double k1_x,k2_x,k3_x,k4_x;
         double x_n = initial_x;
         double v_n = initial_v;
+        
+        double v_np1 = 0;
 
         for (int i=0;i<n_iter;i++) {
 
-                k1_v = f_x(y_n) * dt;
-                k2_v = f_x(y_n + (0.5 * k1)) * dt;
-                k3_v = f_x(y_n + (0.5 * k2)) * dt;
-                k4_v = f_x(y_n + k3) * dt;
+                k1_v = f_x(x_n) * dt;
+                k2_v = f_x(x_n + (0.5 * k1_v)) * dt;
+                k3_v = f_x(x_n + (0.5 * k2_v)) * dt;
+                k4_v = f_x(x_n + k3_v) * dt;
 
-                y_n = y_n + (k1 + (2 * k2) + (2 * k3) + k4)/6;
-                fprintf(RK,"%f\n",y_n);
+                v_np1 = v_n + (k1_v + (2 * k2_v) + (2 * k3_v) + k4_v)/6;
+
+                k1_x = v_n * dt;
+                k2_x = (v_n + (0.5 * k1_x)) * dt;
+                k3_x = (v_n + (0.5 * k2_x)) * dt;
+                k4_x = (v_n + k3_x) * dt;
+
+                x_n = x_n + (k1_x + (2 * k2_x) + (2 * k3_x) + k4_x)/6;
+
+                fprintf(x_file,"%f\n",x_n);
+                fprintf(v_file,"%f\n",v_np1);
         }
-        fclose(RK);
+        fclose(x_file);
+        fclose(v_file);
 }
 
 int main()
