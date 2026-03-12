@@ -48,7 +48,7 @@ double modified_euler() // Heun's method //just half the grid size?
                 m_mid = f_y(y_np5);
                 y_n = y_n + (m_mid * dx);
 
-                fprintf(mod_eul,"%f",y_n);
+                fprintf(mod_eul,"%f\n",y_n);
                 x_track += dx;
         }
         printf("Error in modified euler:%f\n",fabs(y_n - tan(x_end)));

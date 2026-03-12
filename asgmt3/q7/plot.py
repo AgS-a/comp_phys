@@ -49,6 +49,20 @@ plt.title(f'$\\chi$ vs T')
 #plt.ylabel(f'$\\chi$')
 #plt.show()
 
+# --- New Code Start (Calculations) ---
+# Find T for max Cv (L=36)
+max_val = max(cai36)
+max_idx = cai36.index(max_val)
+T_max = T[max_idx]
+
+# Theoretical Tc
+Tc_theory = 3.64
+
+# Add lines to Cv plot
+plt.axvline(x=T_max, color='k', linestyle=':', label=f'Max $\\chi$ (L=36)')
+plt.axvline(x=Tc_theory, color='r', linestyle=':', label='Theoretical Tc')
+# --- New Code End ---
+
 plt.plot(T,cai36,'.',label='L=36')
 #plt.grid(True)
 #plt.title(f'$\\chi$ vs T for L=36')

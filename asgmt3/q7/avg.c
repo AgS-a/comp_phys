@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<math.h>
 #include<stdlib.h>
 #include<time.h>
 
@@ -40,7 +41,7 @@ double Cai(int L, double T)
 
         while(fscanf(fPtr2, "%lf", &entry) != EOF){
                 i += 1;
-                entry = entry * L * L; // Total magnetization
+                entry = fabs(entry * L * L); // Total magnetization
                 sum += entry;
                 sum_sq += entry*entry;
         }

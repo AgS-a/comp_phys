@@ -13,7 +13,7 @@ double f_x(double x)
 
 double RK4_solver(double initial_x, double initial_v)
 {
-        int n_iter = 5000
+        int n_iter = 15000;
 
         FILE *x_file;
         char name_x[64];
@@ -47,6 +47,7 @@ double RK4_solver(double initial_x, double initial_v)
                 k4_x = (v_n + k3_x) * dt;
 
                 x_n = x_n + (k1_x + (2 * k2_x) + (2 * k3_x) + k4_x)/6;
+                v_n = v_np1;
 
                 fprintf(x_file,"%f\n",x_n);
                 fprintf(v_file,"%f\n",v_np1);
@@ -61,11 +62,11 @@ int main()
         
         double x_init = 0.1;
         double v_init = 1.9;
-        RK_solver(x_init,y_init);
+        RK4_solver(x_init,v_init);
 
         x_init = 0;
         v_init = 1.99;
-        RK_solver(x_init,v_init);
+        RK4_solver(x_init,v_init);
 
         clock_t end = clock();
         double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;

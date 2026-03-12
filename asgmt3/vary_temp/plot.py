@@ -10,6 +10,7 @@ for i in range(10):
             M.append(float(lines.strip()))
     plt.plot(M,'-')
     plt.ylabel('Magnetization')
+    plt.xlabel('Iteration')
     plt.title(f'Magnetization at each iteration(KbT={num},L=30)')
     plt.savefig(save_name)
     plt.show()

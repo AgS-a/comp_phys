@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<math.h>
 
 double Cv(int L, double T)
 {
@@ -36,7 +37,7 @@ double Cai(int L, double T)
 
         while(fscanf(fPtr2, "%lf", &entry) != EOF){
                 i += 1;
-                sum += entry;
+                sum += fabs(entry);
         }
         fclose(fPtr2);
 
