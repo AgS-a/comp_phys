@@ -47,6 +47,12 @@ int main()
                         }
                 }
         }
+        for(int i=0;i<34;i++){
+                for(int j=0;j<6;j++){
+                        printf("%f  ",grids[j][i]);
+                }
+                printf("\n");
+        }
 
         clock_t end = clock();
         double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
