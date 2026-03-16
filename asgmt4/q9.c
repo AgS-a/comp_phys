@@ -33,7 +33,6 @@ int main()
                 for(int i=0;i<101;i++){
                         if(abs(y_new[i]-y_old[i]) > tol){
                                 check = 0;
-                                break;
                         }
                 }
                 for(int i=0;i<=100;i++){
