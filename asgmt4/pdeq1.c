@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<math.h>
 
 int main()
 {
@@ -36,7 +37,7 @@ int main()
                 double tol = 1e-4;
                 for(int i=0;i<34;i++){
                         for(int j=0;j<34;j++){
-                                if(abs(gr_tmp[i][j]-grids[i][j]) > tol){
+                                if(fabs(gr_tmp[i][j]-grids[i][j]) > tol){
                                         cond = 0;
                                 }
                         }
@@ -47,12 +48,16 @@ int main()
                         }
                 }
         }
+        FILE *fpt;
+        fpt = fopen("pde1.dat","w");
+
         for(int i=0;i<34;i++){
-                for(int j=0;j<6;j++){
-                        printf("%f  ",grids[j][i]);
+                for(int j=0;j<34;j++){
+                        fprintf(fpt,"%.4f    ",grids[i][j]);
                 }
-                printf("\n");
+                fprintf(fpt,"\n");
         }
+        fclose(fpt);
 
         clock_t end = clock();
         double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;

@@ -14,7 +14,7 @@ int main()
         double y_new[101];
 
         for(int i=1;i<100;i++){
-                y_old[i] = i;
+                y_old[i] = i/50;
         }
 
         y_old[0] = y_new[0] = 0;
@@ -31,7 +31,7 @@ int main()
                 check = 1;
                 double tol = 1e-4;
                 for(int i=0;i<101;i++){
-                        if(abs(y_new[i]-y_old[i]) > tol){
+                        if(fabs(y_new[i]-y_old[i]) > tol){
                                 check = 0;
                         }
                 }

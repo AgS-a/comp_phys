@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<math.h>
 
 int main()
 {
@@ -11,14 +12,14 @@ int main()
         double gr_tmp[34][34];
 
         for(int i=0;i<34;i++){
-                grids[i][0] = 2000 + (-70*i);
-                gr_tmp[i][0] = 2000 + (-70*i);
-                grids[0][i] = 2000 + (-10*i);
-                gr_tmp[0][i] = 2000 + (-10*i);
-                grids[i][33] = (2000 - (70*33)) + (-40*i);
-                gr_tmp[i][33] = (2000 - (70*33)) + (-40*i);
-                grids[33][i] = (2000 - (10*33)) + (30*i);
-                gr_tmp[33][i] = (2000 - (10*33)) + (30*i);
+                grids[0][i] = 2000 + (-70*i);
+                gr_tmp[0][i] = 2000 + (-70*i);
+                grids[i][0] = 2000 + (-10*i);
+                gr_tmp[i][0] = 2000 + (-10*i);
+                grids[33][i] = (2000 - (10*33)) + (-40*i);
+                gr_tmp[33][i] = (2000 - (10*33)) + (-40*i);
+                grids[i][33] = (2000 - (70*33)) + (20*i);
+                gr_tmp[i][33] = (2000 - (70*33)) + (20*i);
         }
 
         int cond =0;
@@ -32,7 +33,7 @@ int main()
                 double tol = 1e-4;
                 for(int i=0;i<34;i++){
                         for(int j=0;j<34;j++){
-                                if(abs(gr_tmp[i][j]-grids[i][j]) > tol){
+                                if(fabs(gr_tmp[i][j]-grids[i][j]) > tol){
                                         cond = 0;
                                 }
                         }
@@ -43,6 +44,16 @@ int main()
                         }
                 }
         }
+        FILE *fpt;
+        fpt = fopen("pde2.dat","w");
+
+        for(int i=0;i<34;i++){
+                for(int j=0;j<34;j++){
+                        fprintf(fpt,"%.4f    ",grids[i][j]);
+                }
+                fprintf(fpt,"\n");
+        }
+        fclose(fpt);
 
         clock_t end = clock();
         double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;

@@ -13,7 +13,7 @@ double f_x(double x)
 
 double RK4_solver(double initial_x, double initial_v)
 {
-        int n_iter = 15000;
+        int n_iter = 5000;
 
         FILE *x_file;
         char name_x[64];
