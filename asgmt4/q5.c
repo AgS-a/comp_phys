@@ -65,7 +65,11 @@ int main()
         RK4_solver(x_init,v_init);
 
         x_init = 0;
-        v_init = 1.99;
+        v_init = 1.999;
+        RK4_solver(x_init,v_init);
+
+        x_init = 0.01;
+        v_init = 2.1;
         RK4_solver(x_init,v_init);
 
         clock_t end = clock();
