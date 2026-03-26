@@ -5,3 +5,5 @@ asgmt1 --> Random walks<br/>
 asgmt2 --> Monte Carlo integration<br/>
 asgmt3 --> Ising model<br/>
 asgmt4 --> Differential equations<br/>
+asgmt5 --> Electronic band structure</br>
+asgmt6 --> Molecular dynamics</br>
