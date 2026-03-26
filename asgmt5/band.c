@@ -3,6 +3,7 @@
 #include<time.h>
 #include<math.h>
 #include<omp.h>
+#include<openblas/lapacke.h>
 
 int main()
 {
