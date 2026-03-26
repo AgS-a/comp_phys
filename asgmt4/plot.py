@@ -82,7 +82,11 @@ plt.xlabel('Time')
 plt.ylabel('Velocity')
 plt.title(r"v(t) for $\frac{d^{2}x}{dt^{2}} = -sin(x)$")
 plt.show()
-
+tot_eng = []
+for i in range(len(v1)):
+    tot_eng.append(9.8*np.cos(x3[i]) + (0.5*(v3[i]**2)))
+plt.plot(tot_eng)
+plt.show()
 ## Question 8 ##
 
 datl8 = []

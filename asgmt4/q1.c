@@ -3,7 +3,7 @@
 #include<time.h>
 #include<math.h>
 
-double dx = 0.01;
+double dx = 0.001;
 double y_init = 0;
 double x_end = 1.55;
 

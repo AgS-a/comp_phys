@@ -5,7 +5,7 @@ data1 = np.loadtxt("pde1.dat")
 data1 = np.transpose(data1)
 print(data1[19][19])
 
-plt.imshow(data1,cmap="viridis")
+plt.imshow(data1,cmap="plasma")
 plt.colorbar(label='Temperature')
 ax = plt.gca() # Get the current axes
 ax.xaxis.tick_top() # Move the ticks and numbers to the top
@@ -19,7 +19,7 @@ data2 = np.loadtxt("pde2.dat")
 #data2 = np.transpose(data2)
 print(data2[9][9])
 
-plt.imshow(data2,cmap="viridis")
+plt.imshow(data2,cmap="plasma")
 plt.colorbar(label="Temperature")
 plt.xlabel("x")
 plt.ylabel("y")

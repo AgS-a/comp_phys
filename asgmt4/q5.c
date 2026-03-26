@@ -60,7 +60,7 @@ int main()
 {
         clock_t begin = clock();
         
-        double x_init = 0.1;
+        double x_init = 0.0;
         double v_init = 1.9;
         RK4_solver(x_init,v_init);
 
