@@ -1,0 +1,2 @@
+how to define boundary conditions
+avg of 4 box is not giving the low res grid value

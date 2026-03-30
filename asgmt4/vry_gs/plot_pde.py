@@ -3,7 +3,7 @@ import numpy as np
 
 data1 = np.loadtxt("pde1.dat")
 data1 = np.transpose(data1)
-print(data1[1][1])
+print((data1[2][2]+data1[2][3]+data1[3][2]+data1[3][3])/4)
 
 plt.imshow(data1,cmap="plasma")
 plt.colorbar(label='Temperature')
