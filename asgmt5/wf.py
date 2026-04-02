@@ -43,11 +43,9 @@ def plot_wavefunction(filename, a, num_G_points, k_index, band_index):
 
     prob_density = np.abs(psi)**2
 
-    # Plotting
     plt.figure(figsize=(8, 4))
     plt.plot(x, prob_density, color='purple', linewidth=2)
     
-    # vertical lines to show the unit cell boundaries
     plt.axvline(x=-a/2, color='black', linestyle='--', alpha=0.5)
     plt.axvline(x=a/2, color='black', linestyle='--', alpha=0.5)
     
@@ -83,7 +81,7 @@ plot_wavefunction(
 )
 
 plot_wavefunction(
-    filename="ev_a1.50_Vo10.00_nk_401_ng21.dat",
+    filename="ev_a1.50_Vo10.00_nk401_ng21.dat",
     a=1.50,
     num_G_points=21,
     k_index=0,
