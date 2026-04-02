@@ -82,6 +82,13 @@ plot_wavefunction(
     band_index=0    
 )
 
+plot_wavefunction(
+    filename="ev_a1.50_Vo10.00_nk_401_ng21.dat",
+    a=1.50,
+    num_G_points=21,
+    k_index=0,
+    band_index=0
+)
 dat_files = ['ev_a10.00_Vo0.50_nk401_ng21.dat',
 'ev_a10.00_Vo8.50_nk401_ng21.dat',
 'ev_a1.00_Vo0.00_nk401_ng11.dat',
