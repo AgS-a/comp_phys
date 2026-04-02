@@ -109,6 +109,7 @@ void run_bands(double a, int num_k_points, double V0, int num_G_points)
 
         int z = 0;
         fclose(fPtr);
+        fclose(fPt);
 }
 
 int main()

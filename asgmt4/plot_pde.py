@@ -3,8 +3,11 @@ import numpy as np
 
 data1 = np.loadtxt("pde1.dat")
 data1 = np.transpose(data1)
-print(data1[1][1])
 
+cell1 = -1
+cell2 = -1
+print(data1[cell1][cell2])
+print(data1[1])
 plt.imshow(data1,cmap="plasma")
 plt.colorbar(label='Temperature')
 ax = plt.gca() # Get the current axes
@@ -13,7 +16,7 @@ ax.xaxis.set_label_position('top') # Move the "x" label to the top
 plt.xlabel("x")
 plt.ylabel("y")
 plt.title("Temperature profile of 2-d plate with given boundary conditions")
-plt.show()
+#plt.show()
 '''
 data2 = np.loadtxt("pde2.dat")
 #data2 = np.transpose(data2)
