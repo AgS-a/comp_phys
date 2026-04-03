@@ -29,11 +29,10 @@ def plot_wavefunction(filename, a, num_G_points, k_index, band_index):
     # The rest of the line contains the eigenvector coefficients
     eigenvector = np.array([float(val) for val in band_data[1:]])
 
-    # Reconstruct the wavefunction in real space across a few unit cells
     x = np.linspace(-2*a, 2*a, 1000)
+    #x = np.linspace(-a,a,1000)
     psi = np.zeros_like(x, dtype=complex)
 
-    # Recreate the G-points exactly as done in the C code
     m_edge_pt = -(num_G_points - 1) // 2
     G_pts = [(2 * np.pi * m_edge_pt / a) + (i * 2 * np.pi / a) for i in range(num_G_points)]
 
@@ -84,8 +83,16 @@ plot_wavefunction(
     filename="ev_a1.50_Vo10.00_nk401_ng21.dat",
     a=1.50,
     num_G_points=21,
-    k_index=0,
+    k_index=200,
     band_index=0
+)
+
+plot_wavefunction(
+    filename="ev_a1.50_Vo10.00_nk401_ng21.dat",
+    a=1.50,
+    num_G_points=21,
+    k_index=0,
+    band_index=10
 )
 dat_files = ['ev_a10.00_Vo0.50_nk401_ng21.dat',
 'ev_a10.00_Vo8.50_nk401_ng21.dat',

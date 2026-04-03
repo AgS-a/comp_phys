@@ -34,7 +34,7 @@ int main()
                         }
                 }
                 cond = 1;
-                double tol = 1e-4;
+                double tol = 1e-7;
                 for(int i=0;i<34;i++){
                         for(int j=0;j<34;j++){
                                 if(fabs(gr_tmp[i][j]-grids[i][j]) > tol){
