@@ -129,8 +129,8 @@ void initialize_velocies(int no_of_part, double KbT, double m, double x_vel_arra
         memcpy(z_vel_array, z_vel, sizeof(z_vel));
 }
 
-// INCOMPLETE //
-double force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
+// Check this sub-routine again //
+void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                 double z_pos[], double cutoff_distance, double force_arr_x[],
                 double force_arr_y[], double force_arr_z[], int no_of_part, double box_size)
 {
@@ -148,12 +148,80 @@ double force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                         double distance = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j], force_direction_array);
                         if(distance < cutoff_distance){
-                                
+                                double force_mag = ((4 * epsilon) * (((12 * pow(sigma, 12))/(pow(distance, 13)))
+                                                - ((6 * pow(sigma, 6))/(pow(distance, 7))))) - Frc;
+                                double x_diff = x_pos[j]-x_pos[i];
+                                double y_diff = y_pos[j]-y_pos[i];
+                                double z_diff = z_pos[j]-z_pos[i];
+
+                                double half_box_size = box_size/2;
+
+                                if(fabs(x_diff) > half_box_size){
+                                        if(x_diff > 0){
+                                                x_diff = x_diff - box_size;
+                                        } else{
+                                                x_diff = box_size + x_diff;
+                                        }
+                                }
+                                if(fabs(y_diff) > half_box_size){
+                                        y_diff = y_diff - box_size;
+                                }
+                                if(fabs(z_diff) > half_box_size){
+                                        z_diff = z_diff - box_size;
+                                }
+                                                
+                                force_x[i] = (force_mag * x_diff)/distance;
+                                force_x[j] = -force_x[i];
+                                force_y[i] = (force_mag * y_diff)/distance;
+                                force_y[j] = -force_y[i];
+                                force_z[i] = (force_mag * z_diff)/distance;
+                                force_z[j] = -force_z[i];
                         }
                 }
         }
+        memcpy(force_arr_x, force_x, sizeof(force_x));
+        memcpy(force_arr_y, force_y, sizeof(force_y));
+        memcpy(force_arr_z, force_z, sizeof(force_z));
 }
 
+void position_update(double x_pos[], double y_pos[], double z_pos[], 
+                double x_vel[], double y_vel[], double z_vel[], double f_xt[], 
+                double f_yt[], double f_zt[], double dt, double mass, int no_of_part)
+{
+        double updated_x[no_of_part];
+        double updated_y[no_of_part];
+        double updated_z[no_of_part];
+        
+        double coeff = (0.5 * dt * dt)/mass;
+        for(int i=0; i < no_of_part; i++){
+                updated_x[i] = (x_pos[i] + (x_vel[i] * dt) + (f_xt[i] * coeff));
+                updated_y[i] = (y_pos[i] + (y_vel[i] * dt) + (f_yt[i] * coeff));
+                updated_z[i] = (z_pos[i] + (z_vel[i] * dt) + (f_zt[i] * coeff));
+        }
+        memcpy(x_pos, updated_x, sizeof(updated_x));
+        memcpy(y_pos, updated_y, sizeof(updated_y));
+        memcpy(z_pos, updated_z, sizeof(updated_z));
+}
+
+void velocity_update(double x_vel[], double y_vel[], double z_vel[], double f_xt[],
+                double f_xtp1[], double f_yt[], double f_ytp1[], double f_zt[], 
+                double f_ztp1[], double dt, double mass, int no_of_part)
+{
+        double updated_vx[no_of_part];
+        double updated_vy[no_of_part];
+        double updated_vz[no_of_part];
+
+        double coeff = (0.5 * dt)/mass;
+
+        for(int i=0; i < no_of_part; i++){
+                updated_vx[i] = x_vel[i] + (f_xt[i] + f_xtp1[i]) * coeff;
+                updated_vy[i] = y_vel[i] + (f_yt[i] + f_ytp1[i]) * coeff;
+                updated_vz[i] = z_vel[i] + (f_zt[i] + f_ztp1[i]) * coeff;
+        }
+        memcpy(x_vel, updated_vx, sizeof(updated_vx));
+        memcpy(y_vel, updated_vy, sizeof(updated_vy));
+        memcpy(z_vel, updated_vz, sizeof(updated_vz));
+}
 int main()
 {
         clock_t begin = clock();
@@ -190,7 +258,12 @@ int main()
 
         int n_iter = 10;
         for(int i=0; i < n_iter; i++){
-
+                force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
+                                x_force, y_force, z_force, n, box_size);
+                position_update(x_position, y_position, z_position, x_velocity, y_velocity,
+                                z_velocity, x_force, y_force, z_force, dt, mass, n);
+                velocity_update(x_velocity, y_velocity, z_velocity, x_force, x_force_new,
+                                y_force, y_force_new, z_force, z_force_new, dt, mass, n);
         }
 
         clock_t end = clock();
