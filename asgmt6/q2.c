@@ -25,36 +25,27 @@ double PBC(double position,double box_size)
 }
 
 double calc_dist(double box_size, double x1_pos, double x2_pos, double y1_pos,
-                double y2_pos, double z1_pos, double z2_pos, int force_dir[])
+                double y2_pos, double z1_pos, double z2_pos)
 {
         // Naive component-wise distance ignoring PBC
         double x_dist = fabs(x1_pos - x2_pos);
         double y_dist = fabs(y1_pos - y2_pos);
         double z_dist = fabs(z1_pos - z2_pos);
 
-        int force_direction[3] = {1,1,1}; // Component-wise direction of force
-
         // If naive distance is greater than half the box size, apply PBC
         double updated_x_dist = box_size - x_dist;
         if(x_dist > updated_x_dist){
-                force_direction[0] = -1; // Switch direction of force
-                                         // if PBC is applied
                 x_dist = updated_x_dist;
         }
         double updated_y_dist = box_size - y_dist;
         if(y_dist > updated_y_dist){
-                force_direction[1] = -1;
                 y_dist = updated_y_dist;
         }
         double updated_z_dist = box_size - z_dist;
         if(z_dist > updated_z_dist){
-                force_direction[2] = -1;
                 z_dist = updated_z_dist;
         }
         
-        // Export force directions
-        memcpy(force_dir, force_direction, sizeof(force_direction));
-
         // Calculate distance between the particles with the component-wise dist
         double dist = sqrt(pow(x_dist, 2) + pow(y_dist, 2) + pow(z_dist, 2));
 
@@ -74,12 +65,11 @@ void initialize_positions(int no_of_part, double box_size, double x_pos_array[],
                 y_pos[i] = frand() * box_size;
                 z_pos[i] = frand() * box_size;
                 
-                int garbage_array[3]; // For force direction
                 for(int j=0; j < i; j++){
                         // If the particles overlap with others, initialize again
                         double dist;
                         dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
-                                        y_pos[j], z_pos[i], z_pos[j], garbage_array);
+                                        y_pos[j], z_pos[i], z_pos[j]);
                         if(dist < 1){
                                 i = i-1;
                                 break;
@@ -142,11 +132,11 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
         double force_y[no_of_part];
         double force_z[no_of_part];
 
+        #pragma omp parallel for collapse(2)
         for(int i=0; i < no_of_part; i++){
                 for(int j=no_of_part-1; j > i; j--){
-                        int force_direction_array[3];
                         double distance = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
-                                        y_pos[j], z_pos[i], z_pos[j], force_direction_array);
+                                        y_pos[j], z_pos[i], z_pos[j]);
                         if(distance < cutoff_distance){
                                 double force_mag = ((4 * epsilon) * (((12 * pow(sigma, 12))/(pow(distance, 13)))
                                                 - ((6 * pow(sigma, 6))/(pow(distance, 7))))) - Frc;
@@ -193,6 +183,8 @@ void position_update(double x_pos[], double y_pos[], double z_pos[],
         double updated_z[no_of_part];
         
         double coeff = (0.5 * dt * dt)/mass;
+
+        #pragma omp parallel for collapse(1)
         for(int i=0; i < no_of_part; i++){
                 updated_x[i] = (x_pos[i] + (x_vel[i] * dt) + (f_xt[i] * coeff));
                 updated_y[i] = (y_pos[i] + (y_vel[i] * dt) + (f_yt[i] * coeff));
@@ -213,6 +205,7 @@ void velocity_update(double x_vel[], double y_vel[], double z_vel[], double f_xt
 
         double coeff = (0.5 * dt)/mass;
 
+        #pragma omp parallel for collapse(1)
         for(int i=0; i < no_of_part; i++){
                 updated_vx[i] = x_vel[i] + (f_xt[i] + f_xtp1[i]) * coeff;
                 updated_vy[i] = y_vel[i] + (f_yt[i] + f_ytp1[i]) * coeff;
@@ -224,7 +217,7 @@ void velocity_update(double x_vel[], double y_vel[], double z_vel[], double f_xt
 }
 int main()
 {
-        clock_t begin = clock();
+        double begin = omp_get_wtime();
 
         srand(time(NULL));
 
@@ -256,7 +249,7 @@ int main()
         initialize_positions(n, box_size, x_position, y_position, z_position);
         initialize_velocies(n, KbT, mass, x_velocity, y_velocity, z_velocity);
 
-        int n_iter = 10;
+        int n_iter = 20000;
         for(int i=0; i < n_iter; i++){
                 force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
                                 x_force, y_force, z_force, n, box_size);
@@ -266,9 +259,9 @@ int main()
                                 y_force, y_force_new, z_force, z_force_new, dt, mass, n);
         }
 
-        clock_t end = clock();
-        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
-        printf("\nSuccessfully finished running in %.8f s.\n",time_spent);
+        double end = omp_get_wtime();
+        double time_spent = (end-begin);
+        printf("\nSuccessfully finished running in %.8f s.\n",(end-begin));
 
         return 0;
 }
