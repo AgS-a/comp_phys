@@ -132,14 +132,15 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
         double force_y[no_of_part];
         double force_z[no_of_part];
 
-        #pragma omp parallel for collapse(2)
         for(int i=0; i < no_of_part; i++){
+                //#pragma omp parallel for collapse(1)
                 for(int j=no_of_part-1; j > i; j--){
                         double distance = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
                         if(distance < cutoff_distance){
-                                double force_mag = ((4 * epsilon) * (((12 * pow(sigma, 12))/(pow(distance, 13)))
-                                                - ((6 * pow(sigma, 6))/(pow(distance, 7))))) - Frc;
+                                double force_mag = ((4 * epsilon) * (((12 * pow(sigma, 12))
+                                                                      /(pow(distance, 13)))
+                                        - ((6 * pow(sigma, 6))/(pow(distance, 7))))) - Frc;
                                 double x_diff = x_pos[j]-x_pos[i];
                                 double y_diff = y_pos[j]-y_pos[i];
                                 double z_diff = z_pos[j]-z_pos[i];
@@ -160,12 +161,12 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                                         z_diff = z_diff - box_size;
                                 }
                                                 
-                                force_x[i] = (force_mag * x_diff)/distance;
-                                force_x[j] = -force_x[i];
-                                force_y[i] = (force_mag * y_diff)/distance;
-                                force_y[j] = -force_y[i];
-                                force_z[i] = (force_mag * z_diff)/distance;
-                                force_z[j] = -force_z[i];
+                                force_x[i] += (force_mag * x_diff)/distance;
+                                force_x[j] += -force_x[i];
+                                force_y[i] += (force_mag * y_diff)/distance;
+                                force_y[j] += -force_y[i];
+                                force_z[i] += (force_mag * z_diff)/distance;
+                                force_z[j] += -force_z[i];
                         }
                 }
         }
@@ -215,6 +216,55 @@ void velocity_update(double x_vel[], double y_vel[], double z_vel[], double f_xt
         memcpy(y_vel, updated_vy, sizeof(updated_vy));
         memcpy(z_vel, updated_vz, sizeof(updated_vz));
 }
+
+double calculate_KE(double x_vel[], double y_vel[], double z_vel[], int no_of_part,
+                double mass)
+{
+        double KE_tot = 0;
+        double KE_mat[no_of_part];
+
+        #pragma omp parallel for collapse(1)
+        for(int i=0; i < no_of_part; i++){
+                KE_mat[i] = (0.5 * mass * (pow(x_vel[i], 2) + pow(y_vel[i], 2) 
+                                        + pow(z_vel[i], 2)));
+        }
+        for(int i=0; i < no_of_part; i++){
+                KE_tot += KE_mat[i];
+        }
+        return KE_tot;
+}
+
+double calculate_PE(double x_pos[], double y_pos[], double z_pos[], double cutoff_dist,
+                int no_of_part, double box_size, double sigma, double epsilon)
+{
+        double Vrc = ((4 * epsilon) * ((pow((sigma/cutoff_dist), 12)) 
+                                -(pow((sigma/cutoff_dist), 6))));
+
+        double Frc = ((4 * epsilon) * (((12 * pow(sigma, 12))/(pow(cutoff_dist, 13)))
+                        - ((6 * pow(sigma, 6))/(pow(cutoff_dist, 7)))));
+        double shift = -(Vrc + (Frc * cutoff_dist));
+
+        double pot[no_of_part];
+        double PE_tot = 0;
+
+        for(int i=0; i < no_of_part; i++){
+                //#pragma omp parallel for collapse(1)
+                for(int j=no_of_part-1; j > i; j--){
+                        double dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
+                                        y_pos[j], z_pos[i], z_pos[j]);
+                        if(dist < cutoff_dist){
+                               pot[i] += ((4 * epsilon) * ((pow((sigma/dist), 12)) 
+                                -(pow((sigma/dist), 6)))) + (dist * Frc) + shift;
+                               pot[j] += pot[i];
+                        }
+                }
+        }
+        for(int i=0; i < no_of_part; i++){
+                PE_tot += pot[i];
+        }
+        return PE_tot;
+}
+
 int main()
 {
         double begin = omp_get_wtime();
@@ -246,6 +296,15 @@ int main()
         double y_force_new[n];
         double z_force_new[n];
 
+        FILE *fPtr;
+        fPtr = fopen("KEq2.dat","w");
+
+        FILE *fPt;
+        fPt = fopen("PEq2.dat","w");
+
+        double KE = 0;
+        double PE = 0;
+
         initialize_positions(n, box_size, x_position, y_position, z_position);
         initialize_velocies(n, KbT, mass, x_velocity, y_velocity, z_velocity);
 
@@ -257,7 +316,16 @@ int main()
                                 z_velocity, x_force, y_force, z_force, dt, mass, n);
                 velocity_update(x_velocity, y_velocity, z_velocity, x_force, x_force_new,
                                 y_force, y_force_new, z_force, z_force_new, dt, mass, n);
+                if(i%10 == 0){
+                        KE = calculate_KE(x_velocity, y_velocity, z_velocity, n, mass);
+                        PE = calculate_PE(x_position, y_position, z_position, r_c, n, box_size,
+                                        sigma, epsilon);
+                        fprintf(fPtr, "%f\n", KE);
+                        fprintf(fPt, "%f\n", PE);
+                }
         }
+        fclose(fPtr);
+        fclose(fPt);
 
         double end = omp_get_wtime();
         double time_spent = (end-begin);
