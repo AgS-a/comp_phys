@@ -20,7 +20,6 @@ double PBC(double position,double box_size)
         if(modulo_position < 0){
                 final_coordinate = modulo_position + box_size;
         }
-
         return final_coordinate;
 }
 
@@ -70,7 +69,7 @@ void initialize_positions(int no_of_part, double box_size, double x_pos_array[],
                         double dist;
                         dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
-                        if(dist < 1){
+                        if(dist < 1.2){
                                 i = i-1;
                                 break;
                         }
@@ -133,6 +132,11 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
         double force_z[no_of_part];
 
         for(int i=0; i < no_of_part; i++){
+                force_x[i] = 0;
+                force_y[i] = 0;
+                force_z[i] = 0;
+        }
+        for(int i=0; i < no_of_part; i++){
                 //#pragma omp parallel for collapse(1)
                 for(int j=no_of_part-1; j > i; j--){
                         double distance = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
@@ -160,13 +164,17 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                                 if(fabs(z_diff) > half_box_size){
                                         z_diff = z_diff - box_size;
                                 }
-                                                
-                                force_x[i] += (force_mag * x_diff)/distance;
-                                force_x[j] += -force_x[i];
-                                force_y[i] += (force_mag * y_diff)/distance;
-                                force_y[j] += -force_y[i];
-                                force_z[i] += (force_mag * z_diff)/distance;
-                                force_z[j] += -force_z[i];
+                                // Check sign
+                                double fx_ij = (-force_mag * x_diff)/distance;
+                                double fy_ij = (-force_mag * y_diff)/distance;
+                                double fz_ij = (-force_mag * z_diff)/distance;
+                                
+                                force_x[i] += fx_ij;
+                                force_x[j] += -fx_ij;
+                                force_y[i] += fy_ij;
+                                force_y[j] += -fy_ij;
+                                force_z[i] += fz_ij;
+                                force_z[j] += -fz_ij;
                         }
                 }
         }
@@ -175,9 +183,9 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
         memcpy(force_arr_z, force_z, sizeof(force_z));
 }
 
-void position_update(double x_pos[], double y_pos[], double z_pos[], 
-                double x_vel[], double y_vel[], double z_vel[], double f_xt[], 
-                double f_yt[], double f_zt[], double dt, double mass, int no_of_part)
+void position_update(double x_pos[], double y_pos[], double z_pos[], double x_vel[], 
+                double y_vel[], double z_vel[], double f_xt[], double f_yt[], 
+                double f_zt[], double dt, double mass, int no_of_part, double box_size)
 {
         double updated_x[no_of_part];
         double updated_y[no_of_part];
@@ -187,9 +195,15 @@ void position_update(double x_pos[], double y_pos[], double z_pos[],
 
         #pragma omp parallel for collapse(1)
         for(int i=0; i < no_of_part; i++){
+                // Updating position using velocity verlet algorithm
                 updated_x[i] = (x_pos[i] + (x_vel[i] * dt) + (f_xt[i] * coeff));
                 updated_y[i] = (y_pos[i] + (y_vel[i] * dt) + (f_yt[i] * coeff));
                 updated_z[i] = (z_pos[i] + (z_vel[i] * dt) + (f_zt[i] * coeff));
+                
+                // Applying PBC
+                updated_x[i] = PBC(updated_x[i], box_size);
+                updated_y[i] = PBC(updated_y[i], box_size);
+                updated_z[i] = PBC(updated_z[i], box_size);
         }
         memcpy(x_pos, updated_x, sizeof(updated_x));
         memcpy(y_pos, updated_y, sizeof(updated_y));
@@ -208,6 +222,7 @@ void velocity_update(double x_vel[], double y_vel[], double z_vel[], double f_xt
 
         #pragma omp parallel for collapse(1)
         for(int i=0; i < no_of_part; i++){
+                // Updating velocity using velocity verlet algorithm
                 updated_vx[i] = x_vel[i] + (f_xt[i] + f_xtp1[i]) * coeff;
                 updated_vy[i] = y_vel[i] + (f_yt[i] + f_ytp1[i]) * coeff;
                 updated_vz[i] = z_vel[i] + (f_zt[i] + f_ztp1[i]) * coeff;
@@ -231,7 +246,7 @@ double calculate_KE(double x_vel[], double y_vel[], double z_vel[], int no_of_pa
         for(int i=0; i < no_of_part; i++){
                 KE_tot += KE_mat[i];
         }
-        return KE_tot;
+        return (KE_tot/no_of_part);
 }
 
 double calculate_PE(double x_pos[], double y_pos[], double z_pos[], double cutoff_dist,
@@ -244,8 +259,8 @@ double calculate_PE(double x_pos[], double y_pos[], double z_pos[], double cutof
                         - ((6 * pow(sigma, 6))/(pow(cutoff_dist, 7)))));
         double shift = -(Vrc + (Frc * cutoff_dist));
 
-        double pot[no_of_part];
         double PE_tot = 0;
+        double pair_pot = 0;
 
         for(int i=0; i < no_of_part; i++){
                 //#pragma omp parallel for collapse(1)
@@ -253,16 +268,13 @@ double calculate_PE(double x_pos[], double y_pos[], double z_pos[], double cutof
                         double dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
                         if(dist < cutoff_dist){
-                               pot[i] += ((4 * epsilon) * ((pow((sigma/dist), 12)) 
+                               pair_pot = ((4 * epsilon) * ((pow((sigma/dist), 12)) 
                                 -(pow((sigma/dist), 6)))) + (dist * Frc) + shift;
-                               pot[j] += pot[i];
+                               PE_tot += pair_pot;
                         }
                 }
         }
-        for(int i=0; i < no_of_part; i++){
-                PE_tot += pot[i];
-        }
-        return PE_tot;
+        return (PE_tot/no_of_part);
 }
 
 int main()
@@ -272,7 +284,7 @@ int main()
         srand(time(NULL));
 
         int n = 2197; // Number of particles
-        double dt = 0.005; // Integration time step
+        double dt = 0.0025; // Integration time step
         double box_size = 20;
         double epsilon = 1; // Depth of potential minima
         double r_c = 2.5; // Cutoff radius
@@ -308,14 +320,22 @@ int main()
         initialize_positions(n, box_size, x_position, y_position, z_position);
         initialize_velocies(n, KbT, mass, x_velocity, y_velocity, z_velocity);
 
-        int n_iter = 20000;
+        force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
+                        x_force, y_force, z_force, n, box_size);
+
+        int n_iter = 1000;
         for(int i=0; i < n_iter; i++){
-                force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
-                                x_force, y_force, z_force, n, box_size);
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
-                                z_velocity, x_force, y_force, z_force, dt, mass, n);
+                                z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
+                force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
+                                x_force_new, y_force_new, z_force_new, n, box_size);
                 velocity_update(x_velocity, y_velocity, z_velocity, x_force, x_force_new,
                                 y_force, y_force_new, z_force, z_force_new, dt, mass, n);
+
+                memcpy(x_force, x_force_new, sizeof(x_force_new));
+                memcpy(y_force, y_force_new, sizeof(y_force_new));
+                memcpy(z_force, z_force_new, sizeof(z_force_new));
+
                 if(i%10 == 0){
                         KE = calculate_KE(x_velocity, y_velocity, z_velocity, n, mass);
                         PE = calculate_PE(x_position, y_position, z_position, r_c, n, box_size,
