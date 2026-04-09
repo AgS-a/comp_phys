@@ -69,7 +69,7 @@ void initialize_positions(int no_of_part, double box_size, double x_pos_array[],
                         double dist;
                         dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
-                        if(dist < 1.2){
+                        if(dist < 1.0){
                                 i = i-1;
                                 break;
                         }
@@ -277,26 +277,6 @@ double calculate_PE(double x_pos[], double y_pos[], double z_pos[], double cutof
         return (PE_tot/no_of_part);
 }
 
-void thermostat(double vel_x[], double vel_y[], double vel_z[], double KbT, int no_of_part,
-                double mass, double KE_sys, double KE_req)
-{
-        double scale = sqrt(KE_req/KE_sys);
-
-        double v_x[no_of_part];
-        double v_y[no_of_part];
-        double v_z[no_of_part];
-        
-        #pragma omp parallel for collapse(1)
-        for(int i=0; i < no_of_part; i++){
-                v_x[i] = vel_x[i] * scale;
-                v_y[i] = vel_y[i] * scale;
-                v_z[i] = vel_z[i] * scale;
-        }
-        memcpy(vel_x, v_x, sizeof(v_x));
-        memcpy(vel_y, v_y, sizeof(v_y));
-        memcpy(vel_z, v_z, sizeof(v_z));
-}
-
 int main()
 {
         double begin = omp_get_wtime();
@@ -329,15 +309,13 @@ int main()
         double z_force_new[n];
 
         FILE *fPtr;
-        fPtr = fopen("KEq2.dat","w");
+        fPtr = fopen("dist.dat","w");
 
         FILE *fPt;
-        fPt = fopen("PEq2.dat","w");
+        fPt = fopen("vel.dat","w");
 
         double KE = 0;
         double PE = 0;
-
-        double KE_req = 1.5 * KbT;
 
         initialize_positions(n, box_size, x_position, y_position, z_position);
         initialize_velocies(n, KbT, mass, x_velocity, y_velocity, z_velocity);
@@ -345,8 +323,23 @@ int main()
         force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
                         x_force, y_force, z_force, n, box_size);
 
-        int n_iter = 20000;
+        for(int i=0; i < n; i++){
+                for(int j= n-1; j > i; j--){
+                        double dist = calc_dist(box_size, x_position[i], x_position[j],
+                                y_position[i], y_position[j], z_position[i], z_position[j]);
+                        if(dist < 1){
+                                fprintf(fPtr, "%f\n", dist);
+                        }
+                }
+        }
+/*
+        int n_iter = 2000;
         for(int i=0; i < n_iter; i++){
+                if(i < 500){
+                        dt = 0.0001;
+                } else{
+                        dt = 0.005;
+                }
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
                 force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
@@ -358,18 +351,15 @@ int main()
                 memcpy(y_force, y_force_new, sizeof(y_force_new));
                 memcpy(z_force, z_force_new, sizeof(z_force_new));
 
-                if(i%20 == 0){
+                if(i%10 == 0){
                         KE = calculate_KE(x_velocity, y_velocity, z_velocity, n, mass);
                         PE = calculate_PE(x_position, y_position, z_position, r_c, n, box_size,
                                         sigma, epsilon);
-
                         fprintf(fPtr, "%f\n", KE);
                         fprintf(fPt, "%f\n", PE);
                 }
-                if(i%50 ==0){
-                        thermostat(x_velocity, y_velocity, z_velocity, KbT, n, mass, KE, KE_req);
-                }
         }
+*/
         fclose(fPtr);
         fclose(fPt);
 

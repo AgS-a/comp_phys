@@ -69,7 +69,7 @@ void initialize_positions(int no_of_part, double box_size, double x_pos_array[],
                         double dist;
                         dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
-                        if(dist < 1.2){
+                        if(dist < 1.0){
                                 i = i-1;
                                 break;
                         }
@@ -323,8 +323,13 @@ int main()
         force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
                         x_force, y_force, z_force, n, box_size);
 
-        int n_iter = 20000;
+        int n_iter = 2000;
         for(int i=0; i < n_iter; i++){
+                if(i < 500){
+                        dt = 0.0001;
+                } else{
+                        dt = 0.005;
+                }
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
                 force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,

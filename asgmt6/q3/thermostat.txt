@@ -1,0 +1,19 @@
+void thermostat(double vel_x[], double vel_y[], double vel_z[], double KbT, int no_of_part,
+                double mass, double KE_sys, double KE_req)
+{
+        double scale = sqrt(KE_req/KE_sys);
+
+        double v_x[no_of_part];
+        double v_y[no_of_part];
+        double v_z[no_of_part];
+        
+        #pragma omp parallel for collapse(1)
+        for(int i=0; i < no_of_part; i++){
+                v_x[i] = vel_x[i] * scale;
+                v_y[i] = vel_y[i] * scale;
+                v_z[i] = vel_z[i] * scale;
+        }
+        memcpy(vel_x, v_x, sizeof(v_x));
+        memcpy(vel_y, v_y, sizeof(v_y));
+        memcpy(vel_z, v_z, sizeof(v_z));
+}
