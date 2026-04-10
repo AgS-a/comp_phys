@@ -282,7 +282,7 @@ int main()
         srand(time(NULL));
 
         int n = 2197; // Number of particles
-        double dt = 0.00005; // Integration time step
+        double dt = 0.0005; // Integration time step
         double box_size = 20;
         double epsilon = 1; // Depth of potential minima
         double r_c = 2.5; // Cutoff radius
@@ -321,7 +321,7 @@ int main()
         force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
                         x_force, y_force, z_force, n, box_size);
 
-        int n_iter = 2000;
+        int n_iter = 100000;
         for(int i=0; i < n_iter; i++){
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
@@ -334,7 +334,7 @@ int main()
                 memcpy(y_force, y_force_new, sizeof(y_force_new));
                 memcpy(z_force, z_force_new, sizeof(z_force_new));
 
-                if(i%10 == 0){
+                if(i%100 == 0){
                         KE = calculate_KE(x_velocity, y_velocity, z_velocity, n, mass);
                         PE = calculate_PE(x_position, y_position, z_position, r_c, n, box_size,
                                         sigma, epsilon);
