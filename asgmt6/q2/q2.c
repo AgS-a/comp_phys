@@ -69,7 +69,7 @@ void initialize_positions(int no_of_part, double box_size, double x_pos_array[],
                         double dist;
                         dist = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
-                        if(dist < 1.0){
+                        if(dist < 1.2){
                                 i = i-1;
                                 break;
                         }
@@ -137,7 +137,6 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                 force_z[i] = 0;
         }
         for(int i=0; i < no_of_part; i++){
-                //#pragma omp parallel for collapse(1)
                 for(int j=no_of_part-1; j > i; j--){
                         double distance = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
                                         y_pos[j], z_pos[i], z_pos[j]);
@@ -164,7 +163,6 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                                 if(fabs(z_diff) > half_box_size){
                                         z_diff = z_diff - box_size;
                                 }
-                                // Check sign
                                 double fx_ij = (-force_mag * x_diff)/distance;
                                 double fy_ij = (-force_mag * y_diff)/distance;
                                 double fz_ij = (-force_mag * z_diff)/distance;
@@ -284,7 +282,7 @@ int main()
         srand(time(NULL));
 
         int n = 2197; // Number of particles
-        double dt = 0.0025; // Integration time step
+        double dt = 0.00005; // Integration time step
         double box_size = 20;
         double epsilon = 1; // Depth of potential minima
         double r_c = 2.5; // Cutoff radius
@@ -325,11 +323,6 @@ int main()
 
         int n_iter = 2000;
         for(int i=0; i < n_iter; i++){
-                if(i < 500){
-                        dt = 0.0001;
-                } else{
-                        dt = 0.005;
-                }
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
                 force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
