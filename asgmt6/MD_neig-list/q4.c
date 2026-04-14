@@ -308,7 +308,6 @@ void neighbour_list(double x_pos[], double y_pos[], double z_pos[], double KbT, 
         for (int i = 0; i < no_of_part; i++) {
             neighbour_list[i] = (int *)malloc(no_of_part * sizeof(int));
         }
-        //int neighbour_list[no_of_part][no_of_part];
 
         for(int i=0; i<no_of_part; i++){
                 for(int j=0; j<no_of_part; j++){

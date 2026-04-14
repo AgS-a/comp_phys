@@ -329,7 +329,7 @@ int main()
         force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
                         x_force, y_force, z_force, n, box_size);
 
-        int n_iter = 3000;
+        int n_iter = 10000;
         for(int i=0; i < n_iter; i++){
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
