@@ -10,7 +10,7 @@
 
 #define frand() ((double) rand() / (RAND_MAX+1.0))
 
-double PBC(double position,double box_size)
+static inline double PBC(double position,double box_size)
 {
         // Take modulo of position with box size
         double modulo_position = fmod(position, box_size);
@@ -23,7 +23,7 @@ double PBC(double position,double box_size)
         return final_coordinate;
 }
 
-double calc_dist(double box_size, double x1_pos, double x2_pos, double y1_pos,
+static inline double calc_dist(double box_size, double x1_pos, double x2_pos, double y1_pos,
                 double y2_pos, double z1_pos, double z2_pos)
 {
         // Naive component-wise distance ignoring PBC
@@ -46,7 +46,7 @@ double calc_dist(double box_size, double x1_pos, double x2_pos, double y1_pos,
         }
         
         // Calculate distance between the particles with the component-wise dist
-        double dist = sqrt(pow(x_dist, 2) + pow(y_dist, 2) + pow(z_dist, 2));
+        double dist = sqrt((x_dist * x_dist) + (y_dist * y_dist) + (z_dist * z_dist));
 
         return dist;
 }
@@ -136,6 +136,7 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                 force_y[i] = 0;
                 force_z[i] = 0;
         }
+        #pragma omp parallel for schedule(dynamic)
         for(int i=0; i < no_of_part; i++){
                 for(int j=no_of_part-1; j > i; j--){
                         double distance = calc_dist(box_size, x_pos[i], x_pos[j], y_pos[i],
@@ -175,11 +176,17 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                                 double fy_ij = (-force_mag * y_diff)/distance;
                                 double fz_ij = (-force_mag * z_diff)/distance;
                                 
+                                #pragma omp atomic
                                 force_x[i] += fx_ij;
+                                #pragma omp atomic
                                 force_x[j] += -fx_ij;
+                                #pragma omp atomic
                                 force_y[i] += fy_ij;
+                                #pragma omp atomic
                                 force_y[j] += -fy_ij;
+                                #pragma omp atomic
                                 force_z[i] += fz_ij;
+                                #pragma omp atomic
                                 force_z[j] += -fz_ij;
                         }
                 }
