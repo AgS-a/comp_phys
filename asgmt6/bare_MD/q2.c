@@ -158,10 +158,18 @@ void force_calc(double sigma, double epsilon, double x_pos[], double y_pos[],
                                         }
                                 }
                                 if(fabs(y_diff) > half_box_size){
-                                        y_diff = y_diff - box_size;
+                                        if(y_diff > 0){
+                                                y_diff = (y_diff - box_size);
+                                        } else{
+                                                y_diff = box_size + y_diff;
+                                        }
                                 }
                                 if(fabs(z_diff) > half_box_size){
-                                        z_diff = z_diff - box_size;
+                                        if(z_diff > 0){
+                                                z_diff = (z_diff - box_size);
+                                        } else{
+                                                z_diff = box_size + z_diff;
+                                        }
                                 }
                                 double fx_ij = (-force_mag * x_diff)/distance;
                                 double fy_ij = (-force_mag * y_diff)/distance;
@@ -321,7 +329,7 @@ int main()
         force_calc(sigma, epsilon, x_position, y_position, z_position, r_c,
                         x_force, y_force, z_force, n, box_size);
 
-        int n_iter = 30000;
+        int n_iter = 3000;
         for(int i=0; i < n_iter; i++){
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);

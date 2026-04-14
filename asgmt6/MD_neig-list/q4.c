@@ -304,7 +304,11 @@ void neighbour_list(double x_pos[], double y_pos[], double z_pos[], double KbT, 
         double dr = 2 * 5 * v_avg * (double)n_iter * dt;
         double cut = dr + cutoff_r;
 
-        int neighbour_list[no_of_part][no_of_part];
+        int **neighbour_list = (int **)malloc(no_of_part * sizeof(int *));
+        for (int i = 0; i < no_of_part; i++) {
+            neighbour_list[i] = (int *)malloc(no_of_part * sizeof(int));
+        }
+        //int neighbour_list[no_of_part][no_of_part];
 
         for(int i=0; i<no_of_part; i++){
                 for(int j=0; j<no_of_part; j++){
@@ -317,6 +321,7 @@ void neighbour_list(double x_pos[], double y_pos[], double z_pos[], double KbT, 
                         }
                 }
         }
+        free(neighbour_list);
 }
 
 void pair_correlation()
@@ -330,7 +335,7 @@ int main()
 
         srand(time(NULL));
 
-        int n = 219;//7; // Number of particles
+        int n = 2197; // Number of particles
         double dt = 0.0025; // Integration time step
         double box_size = 20;
         double epsilon = 1; // Depth of potential minima
