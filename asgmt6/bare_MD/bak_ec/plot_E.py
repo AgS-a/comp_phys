@@ -15,8 +15,8 @@ TE =[]
 for i in range(len(PE)):
     TE.append(KE[i] + PE[i])
 
-#plt.plot(KE,'.',label="KE")
-#plt.plot(PE,'.',label="PE")
+plt.plot(KE,'.',label="KE")
+plt.plot(PE,'.',label="PE")
 plt.plot(TE,'.',label="TE")
 
 plt.legend()
