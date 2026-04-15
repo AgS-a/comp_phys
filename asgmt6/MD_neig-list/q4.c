@@ -323,7 +323,7 @@ void neighbour_list(double x_pos[], double y_pos[], double z_pos[], double KbT, 
         free(neighbour_list);
 }
 
-void pair_correlation()
+void pair_correlation(double x_pos[], double y_pos[], double z_pos[])
 {
 
 }
