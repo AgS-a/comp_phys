@@ -392,7 +392,7 @@ int main()
         for(int i=0; i<n; i++){
                 fprintf(fP, "%f    ",x_velocity[i]);
                 fprintf(fP, "%f    ",y_velocity[i]);
-                fprintf(fP, "%f    ",x_velocity[i]);
+                fprintf(fP, "%f    ",z_velocity[i]);
                 fprintf(fP, "\n");
         }
         fclose(fP);

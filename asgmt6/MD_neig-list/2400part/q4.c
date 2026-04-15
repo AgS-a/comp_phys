@@ -416,7 +416,7 @@ int main()
 
         srand(time(NULL));
 
-        int n = 3600; // Number of particles
+        int n = 2400; // Number of particles
         double dt = 0.0025; // Integration time step
         double box_size = 20;
         double epsilon = 1; // Depth of potential minima
