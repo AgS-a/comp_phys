@@ -1,0 +1,301 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.3.24)  16 APR 2026 15:59
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**present.tex
+(./present.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+)
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen149
+\Gin@req@width=\dimen150
+)
+(/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count283
+\Gm@cntv=\count284
+\c@Gm@tempcnt=\count285
+\Gm@bindingoffset=\dimen151
+\Gm@wd@mp=\dimen152
+\Gm@odd@mp=\dimen153
+\Gm@even@mp=\dimen154
+\Gm@layoutwidth=\dimen155
+\Gm@layoutheight=\dimen156
+\Gm@layouthoffset=\dimen157
+\Gm@layoutvoffset=\dimen158
+\Gm@dimlist=\toks18
+)
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count286
+) (./present.aux)
+\openout1 = `present.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+ (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count287
+\scratchdimen=\dimen159
+\scratchbox=\box53
+\nofMPsegments=\count288
+\nofMParguments=\count289
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count290
+\MPscratchDim=\dimen160
+\MPnumerator=\count291
+\makeMPintoPDFobject=\count292
+\everyMPtoPDFconversion=\toks20
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(21.68121pt, 570.93257pt, 21.68121pt)
+* v-part:(T,H,B)=(21.68121pt, 751.60756pt, 21.68121pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=570.93257pt
+* \textheight=751.60756pt
+* \oddsidemargin=-50.58878pt
+* \evensidemargin=-50.58878pt
+* \topmargin=-87.58878pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+<Energy_evo_dt5.png, id=1, 987.2082pt x 489.2679pt>
+File: Energy_evo_dt5.png Graphic file (type png)
+<use Energy_evo_dt5.png>
+Package pdftex.def Info: Energy_evo_dt5.png  used on input line 18.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<mb_bare_dt5.png, id=3, 987.2082pt x 489.2679pt>
+File: mb_bare_dt5.png Graphic file (type png)
+<use mb_bare_dt5.png>
+Package pdftex.def Info: mb_bare_dt5.png  used on input line 19.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Energy_evo_dt5.png> <./m
+b_bare_dt5.png>]
+<Energy_evo_dt25.png, id=12, 987.2082pt x 489.2679pt>
+File: Energy_evo_dt25.png Graphic file (type png)
+<use Energy_evo_dt25.png>
+Package pdftex.def Info: Energy_evo_dt25.png  used on input line 28.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<mb_bare_dt25.png, id=13, 987.2082pt x 489.2679pt>
+File: mb_bare_dt25.png Graphic file (type png)
+<use mb_bare_dt25.png>
+Package pdftex.def Info: mb_bare_dt25.png  used on input line 29.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+ [2
+
+ <./Energy_evo_dt25.png> <./mb_bare_dt25.png>]
+<Energy_fluc_dt5.png, id=19, 987.2082pt x 489.2679pt>
+File: Energy_fluc_dt5.png Graphic file (type png)
+<use Energy_fluc_dt5.png>
+Package pdftex.def Info: Energy_fluc_dt5.png  used on input line 38.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<Energy_fluc_dt25.png, id=20, 987.2082pt x 489.2679pt>
+File: Energy_fluc_dt25.png Graphic file (type png)
+<use Energy_fluc_dt25.png>
+Package pdftex.def Info: Energy_fluc_dt25.png  used on input line 39.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 40.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 40.
+ [3
+
+ <./Energy_fluc_dt5.png> <./Energy_fluc_dt25.png>]
+<Energy_evo_thermo.png, id=27, 987.2082pt x 489.2679pt>
+File: Energy_evo_thermo.png Graphic file (type png)
+<use Energy_evo_thermo.png>
+Package pdftex.def Info: Energy_evo_thermo.png  used on input line 48.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<Energy_evo_thermo_zoom.png, id=28, 987.2082pt x 489.2679pt>
+File: Energy_evo_thermo_zoom.png Graphic file (type png)
+<use Energy_evo_thermo_zoom.png>
+Package pdftex.def Info: Energy_evo_thermo_zoom.png  used on input line 49.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+ [4
+
+ <./Energy_evo_thermo.png> <./Energy_evo_thermo_zoom.png>]
+<mb_thermo.png, id=34, 987.2082pt x 489.2679pt>
+File: mb_thermo.png Graphic file (type png)
+<use mb_thermo.png>
+Package pdftex.def Info: mb_thermo.png  used on input line 58.
+(pdftex.def)             Requested size: 559.51147pt x 277.30289pt.
+ [5
+
+ <./mb_thermo.png>]
+<Energy_evo_1200.png, id=39, 987.2082pt x 489.2679pt>
+File: Energy_evo_1200.png Graphic file (type png)
+<use Energy_evo_1200.png>
+Package pdftex.def Info: Energy_evo_1200.png  used on input line 68.
+(pdftex.def)             Requested size: 314.01465pt x 155.62825pt.
+<Energy_evo_2400.png, id=40, 987.2082pt x 489.2679pt>
+File: Energy_evo_2400.png Graphic file (type png)
+<use Energy_evo_2400.png>
+Package pdftex.def Info: Energy_evo_2400.png  used on input line 69.
+(pdftex.def)             Requested size: 314.01465pt x 155.62825pt.
+<Energy_evo_3600.png, id=41, 987.2082pt x 489.2679pt>
+File: Energy_evo_3600.png Graphic file (type png)
+<use Energy_evo_3600.png>
+Package pdftex.def Info: Energy_evo_3600.png  used on input line 70.
+(pdftex.def)             Requested size: 314.01465pt x 155.62825pt.
+ [6
+
+ <./Energy_evo_1200.png> <./Energy_evo_2400.png> <./Energy_evo_3600.png>]
+<pc_1200.png, id=48, 987.2082pt x 489.2679pt>
+File: pc_1200.png Graphic file (type png)
+<use pc_1200.png>
+Package pdftex.def Info: pc_1200.png  used on input line 79.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<mb_1200.png, id=49, 987.2082pt x 489.2679pt>
+File: mb_1200.png Graphic file (type png)
+<use mb_1200.png>
+Package pdftex.def Info: mb_1200.png  used on input line 80.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+ [7
+
+ <./pc_1200.png> <./mb_1200.png>]
+<pc_2400.png, id=56, 987.2082pt x 489.2679pt>
+File: pc_2400.png Graphic file (type png)
+<use pc_2400.png>
+Package pdftex.def Info: pc_2400.png  used on input line 89.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<mb_2400.png, id=57, 987.2082pt x 489.2679pt>
+File: mb_2400.png Graphic file (type png)
+<use mb_2400.png>
+Package pdftex.def Info: mb_2400.png  used on input line 90.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+
+[8
+
+ <./pc_2400.png> <./mb_2400.png>]
+<pc_3600.png, id=63, 987.2082pt x 489.2679pt>
+File: pc_3600.png Graphic file (type png)
+<use pc_3600.png>
+Package pdftex.def Info: pc_3600.png  used on input line 99.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+<mb_3600.png, id=64, 987.2082pt x 489.2679pt>
+File: mb_3600.png Graphic file (type png)
+<use mb_3600.png>
+Package pdftex.def Info: mb_3600.png  used on input line 100.
+(pdftex.def)             Requested size: 525.25691pt x 260.32607pt.
+ [9
+
+ <./pc_3600.png> <./mb_3600.png>]
+<pc_compare.png, id=70, 987.2082pt x 489.2679pt>
+File: pc_compare.png Graphic file (type png)
+<use pc_compare.png>
+Package pdftex.def Info: pc_compare.png  used on input line 109.
+(pdftex.def)             Requested size: 559.51147pt x 277.30289pt.
+
+[10
+
+ <./pc_compare.png>] (./present.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 1965 strings out of 469515
+ 31772 string characters out of 5470807
+ 434756 words of memory out of 5000000
+ 30655 multiletter control sequences out of 15000+600000
+ 627721 words of font info for 40 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 57i,6n,65p,205b,232s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+Output written on present.pdf (10 pages, 774251 bytes).
+PDF statistics:
+ 86 PDF objects out of 1000 (max. 8388607)
+ 31 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 96 words of extra memory for PDF output out of 10000 (max. 10000000)
+
