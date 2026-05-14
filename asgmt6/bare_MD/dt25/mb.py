@@ -7,6 +7,7 @@ data = np.loadtxt('vel.dat')
 vx, vy, vz = data[:, 0], data[:, 1], data[:, 2]
 speeds = np.sqrt(vx**2 + vy**2 + vz**2)
 
+print(np.mean(vx))
 densities, bin_edges = np.histogram(speeds, bins=30, density=True)
 bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 

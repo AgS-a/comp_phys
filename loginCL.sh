@@ -21,6 +21,6 @@ do
     ((nofloop++))
 done
 
-USERNAME="abhaygnanaskandan.s"
+USERNAME="username"
 
 ssh -o StrictHostKeyChecking=no ${USERNAME}@${IP_ADDRESS}

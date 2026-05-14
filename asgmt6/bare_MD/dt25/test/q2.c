@@ -343,7 +343,10 @@ int main()
         double vy = 0;
         double vz = 0;
 
-        int n_iter = 10000;
+        int n_iter = 1000;
+
+        FILE *vel = fopen("momen.dat","w");
+
         for(int i=0; i < n_iter; i++){
                 position_update(x_position, y_position, z_position, x_velocity, y_velocity,
                                 z_velocity, x_force, y_force, z_force, dt, mass, n, box_size);
@@ -365,16 +368,18 @@ int main()
                                 vy += y_velocity[i];
                                 vz += z_velocity[i];
                         }
-                        fprintf(fPtr, "%f\n", KE);
-                        fprintf(fPt, "%f\n", PE);
+                        fprintf(vel, "%.16f\n", vx/n);
+                        fprintf(fPtr, "%.16f\n", KE);
+                        fprintf(fPt, "%.16f\n", PE);
                 }
         }
         fclose(fPtr);
+        fclose(vel);
         fclose(fPt);
 
-        printf("%f\n",vx/(n_iter/50));
-        printf("%f\n",vy/(n_iter/50));
-        printf("%f\n",vz/(n_iter/50));
+        printf("%.3e\n",vx/(n_iter/50));
+        printf("%.3e\n",vy/(n_iter/50));
+        printf("%.3e\n",vz/(n_iter/50));
 
         for(int i=0; i<n; i++){
                 fprintf(fP, "%f    ", x_velocity[i]);
